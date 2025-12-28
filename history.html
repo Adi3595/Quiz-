@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz History</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 900px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    }
+
+    .danger-btn {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .success-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    }
+
+    .danger-btn:hover {
+      box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .success-btn:hover {
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+    }
+
+    .login-btn:hover {
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+    }
+
+    .card {
+      background: rgba(55, 65, 81, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      margin: 25px 0;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .score-badge {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .meta-info {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: #d1d5db;
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .time-info {
+      background: rgba(17, 24, 39, 0.6);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-top: 10px;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .question {
+      background: rgba(75, 85, 99, 0.6);
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-weight: 500;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .options-list {
+      margin: 10px 0;
+      color: #d1d5db;
+    }
+
+    .answer-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .answer-item {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .answer-label {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-bottom: 5px;
+    }
+
+    .correct {
+      color: #22c55e;
+      font-weight: 600;
+      padding: 5px 10px;
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 6px;
+    }
+
+    .wrong {
+      color: #ef4444;
+      font-weight: 600;
+      padding: 5px 10px;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 6px;
+    }
+
+    .explanation {
+      margin-top: 10px;
+      padding: 12px;
+      background: rgba(17, 24, 39, 0.6);
+      border-radius: 8px;
+      border-left: 3px solid #8b5cf6;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #6b7280;
+    }
+
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #d1d5db;
+    }
+
+    .empty-state p {
+      color: #9ca3af;
+      max-width: 400px;
+      margin: 0 auto 30px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      width: 100%;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(59, 130, 246, 0.3);
+      border-top: 4px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    pre {
+      background: rgba(17, 24, 39, 0.8);
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 8px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: rgba(55, 65, 81, 0.95);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal h3 {
+      margin-bottom: 15px;
+      color: #f3f4f6;
+    }
+
+    .modal p {
+      margin-bottom: 25px;
+      color: #d1d5db;
+      line-height: 1.5;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      padding: 10px 20px;
+      min-width: 100px;
+    }
+
+    /* Filter controls */
+    .filter-controls {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .filter-select {
+      background: rgba(75, 85, 99, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 15px;
+      color: white;
+      font-size: 14px;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    /* Individual delete button for each card */
+    .card-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      justify-content: center;
+    }
+
+    .delete-card-btn {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      padding: 8px 16px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .delete-card-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Notification styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      z-index: 1001;
+      animation: slideIn 0.3s ease;
+    }
+
+    .notification.success {
+      background: #10b981;
+    }
+
+    .notification.error {
+      background: #ef4444;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Time filter styles */
+    .time-filter {
+      background: rgba(75, 85, 99, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 15px;
+      color: white;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="clearModal" class="modal">
+    <div class="modal-content">
+      <h3>Clear All History</h3>
+      <p>Are you sure you want to clear ALL your quiz history? This action cannot be undone.</p>
+      <div class="modal-buttons">
+        <button class="danger-btn modal-btn" onclick="confirmClearHistory()">
+          🗑️ Clear All
+        </button>
+        <button class="primary-btn modal-btn" onclick="closeModal()">
+          ✋ Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="deleteQuizModal" class="modal">
+    <div class="modal-content">
+      <h3>Delete Quiz</h3>
+      <p>Are you sure you want to delete this quiz attempt? This action cannot be undone.</p>
+      <div class="modal-buttons">
+        <button class="danger-btn modal-btn" onclick="confirmDeleteQuiz()">
+          🗑️ Delete
+        </button>
+        <button class="primary-btn modal-btn" onclick="closeModal()">
+          ✋ Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h2>Quiz History</h2>
+      <div class="controls">
+        <button class="primary-btn" onclick="window.location.href='topics.html'">
+          📝 New Quiz
+        </button>
+        <button class="success-btn" onclick="exportHistory()">
+          📤 Export
+        </button>
+        <button class="danger-btn" onclick="showClearModal()">
+          🗑️ Clear All
+        </button>
+        <button class="login-btn" onclick="goToLogin()">
+          🔐 Login
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-controls">
+      <select class="filter-select" id="topicFilter" onchange="filterHistory()">
+        <option value="">All Topics</option>
+      </select>
+      <select class="filter-select" id="scoreFilter" onchange="filterHistory()">
+        <option value="">All Scores</option>
+        <option value="90-100">90-100%</option>
+        <option value="70-89">70-89%</option>
+        <option value="50-69">50-69%</option>
+        <option value="0-49">0-49%</option>
+      </select>
+      <select class="filter-select" id="dateFilter" onchange="filterHistory()">
+        <option value="">All Time</option>
+        <option value="today">Today</option>
+        <option value="week">This Week</option>
+        <option value="month">This Month</option>
+      </select>
+      <select class="time-filter" id="timeFilter" onchange="filterHistory()">
+        <option value="">Any Duration</option>
+        <option value="fast">Fast (under 2 min)</option>
+        <option value="medium">Medium (2-5 min)</option>
+        <option value="slow">Slow (over 5 min)</option>
+      </select>
+    </div>
+
+    <div id="historyContainer">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading your quiz history...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allHistory = [];
+    let currentDeleteIndex = null;
+
+    async function loadHistory() {
+      try {
+        const username = localStorage.getItem('username');
+        if (!username) {
+          window.location.href = 'index.html';
+          return;
+        }
+
+        console.log('Loading history for user:', username);
+        
+        const res = await fetch(`/get_history?username=${encodeURIComponent(username)}`);
+        
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
+        const data = await res.json();
+        console.log('History API response:', data);
+        
+        const container = document.getElementById('historyContainer');
+        
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to load history');
+        }
+
+        allHistory = data.history || [];
+        console.log('Loaded history items:', allHistory.length);
+
+        // Remove duplicates on client side as additional safety
+        allHistory = allHistory.filter((item, index, self) => 
+          index === self.findIndex(t => 
+            t.timestamp === item.timestamp && 
+            t.topic === item.topic
+          )
+        );
+
+        console.log('After deduplication:', allHistory.length);
+
+        if (allHistory.length === 0) {
+          showEmptyState();
+          return;
+        }
+
+        // Sort history by timestamp (newest first)
+        allHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        
+        // Populate topic filter
+        populateTopicFilter();
+        
+        // Display filtered history
+        filterHistory();
+        
+      } catch (error) {
+        console.error('Error loading history:', error);
+        showErrorState();
+        showNotification('Error loading history: ' + error.message, 'error');
+      }
+    }
+
+    function populateTopicFilter() {
+      const topicFilter = document.getElementById('topicFilter');
+      // Clear existing options except the first one
+      while (topicFilter.children.length > 1) {
+        topicFilter.removeChild(topicFilter.lastChild);
+      }
+      
+      const topics = [...new Set(allHistory.map(item => item.topic).filter(Boolean))];
+      console.log('Available topics:', topics);
+      
+      topics.forEach(topic => {
+        const option = document.createElement('option');
+        option.value = topic;
+        option.textContent = topic;
+        topicFilter.appendChild(option);
+      });
+    }
+
+    function filterHistory() {
+      const topicFilter = document.getElementById('topicFilter').value;
+      const scoreFilter = document.getElementById('scoreFilter').value;
+      const dateFilter = document.getElementById('dateFilter').value;
+      const timeFilter = document.getElementById('timeFilter').value;
+      
+      let filteredHistory = allHistory.filter(item => {
+        // Topic filter
+        if (topicFilter && item.topic !== topicFilter) return false;
+        
+        // Score filter
+        if (scoreFilter && item.score !== undefined && item.score !== null) {
+          const totalQuestions = item.questions ? item.questions.length : item.total || 1;
+          const score = item.score;
+          const percentage = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+          
+          switch(scoreFilter) {
+            case '90-100': if (percentage < 90) return false; break;
+            case '70-89': if (percentage < 70 || percentage >= 90) return false; break;
+            case '50-69': if (percentage < 50 || percentage >= 70) return false; break;
+            case '0-49': if (percentage >= 50) return false; break;
+          }
+        }
+        
+        // Date filter
+        if (dateFilter) {
+          const itemDate = new Date(item.timestamp);
+          const now = new Date();
+          
+          switch(dateFilter) {
+            case 'today':
+              if (itemDate.toDateString() !== now.toDateString()) return false;
+              break;
+            case 'week':
+              const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+              if (itemDate < weekAgo) return false;
+              break;
+            case 'month':
+              const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+              if (itemDate < monthAgo) return false;
+              break;
+          }
+        }
+        
+        // Time duration filter
+        if (timeFilter && item.time_taken) {
+          const totalSeconds = item.time_taken;
+          switch(timeFilter) {
+            case 'fast':
+              if (totalSeconds > 120) return false; // Over 2 minutes
+              break;
+            case 'medium':
+              if (totalSeconds <= 120 || totalSeconds > 300) return false; // 2-5 minutes
+              break;
+            case 'slow':
+              if (totalSeconds <= 300) return false; // Over 5 minutes
+              break;
+          }
+        }
+        
+        return true;
+      });
+      
+      displayHistory(filteredHistory);
+    }
+
+    function displayHistory(history) {
+      const container = document.getElementById('historyContainer');
+      container.innerHTML = '';
+
+      if (history.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No Matching History</h3>
+            <p>No quiz history matches your current filters. Try adjusting your filter criteria.</p>
+            <button class="primary-btn" onclick="clearFilters()">Clear Filters</button>
+          </div>
+        `;
+        return;
+      }
+
+      history.forEach((historyItem, index) => {
+        const card = createHistoryCard(historyItem, index);
+        container.appendChild(card);
+      });
+    }
+
+    function createHistoryCard(historyItem, index) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      const totalQuestions = historyItem.questions ? historyItem.questions.length : historyItem.total || 0;
+      const score = historyItem.score !== null && historyItem.score !== undefined ? historyItem.score : "Not attempted";
+      
+      // Format timestamp
+      let timestamp;
+      try {
+        timestamp = new Date(historyItem.timestamp).toLocaleString();
+      } catch (e) {
+        timestamp = historyItem.timestamp || 'Unknown date';
+      }
+      
+      // Handle subtopics (could be string or array)
+      const subtopics = Array.isArray(historyItem.subtopics) 
+        ? historyItem.subtopics.join(', ')
+        : historyItem.subtopic || 'General';
+      
+      // Add time information if available
+      const timeTaken = historyItem.time_taken || 0;
+      const avgTime = historyItem.average_time_per_question || 0;
+      const minutes = Math.floor(timeTaken / 60);
+      const seconds = timeTaken % 60;
+      
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="score-badge">${score}/${totalQuestions}</div>
+          <div class="meta-info">
+            <div class="meta-item">
+              📚 ${historyItem.topic || 'Unknown Topic'}
+            </div>
+            <div class="meta-item">
+              📖 ${subtopics}
+            </div>
+            <div class="meta-item">
+              🕒 ${timestamp}
+            </div>
+            ${timeTaken > 0 ? `
+            <div class="meta-item">
+              ⏱️ ${minutes}m ${seconds}s (Avg: ${avgTime}s/q)
+            </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+      
+      // Add time information section
+      if (timeTaken > 0) {
+        const timeInfo = document.createElement('div');
+        timeInfo.className = 'time-info';
+        timeInfo.innerHTML = `
+          <strong>Time Analysis:</strong><br>
+          • Total time: ${minutes}m ${seconds}s<br>
+          • Average per question: ${avgTime} seconds<br>
+          • Efficiency: ${calculateEfficiency(score, totalQuestions, timeTaken)}
+        `;
+        card.appendChild(timeInfo);
+      }
+      
+      // Add questions if available
+      if (historyItem.questions && historyItem.questions.length > 0) {
+        const questionsContainer = document.createElement('div');
+        questionsContainer.className = 'questions-container';
+        
+        historyItem.questions.forEach((q, idx) => {
+          const userAnswer = (historyItem.answers && historyItem.answers[idx]) ? historyItem.answers[idx] : "Not answered";
+          const correctAnswer = q.answer || "";
+          const isCorrect = userAnswer.toUpperCase() === correctAnswer.toUpperCase();
+          
+          const questionDiv = document.createElement('div');
+          questionDiv.className = 'question';
+          
+          let questionText = q.question || 'No question text';
+          // Format code blocks
+          if (questionText.includes("```")) {
+            const parts = questionText.split("```");
+            questionText = "";
+            for (let j = 0; j < parts.length; j++) {
+              if (j % 2 === 0) {
+                questionText += parts[j];
+              } else {
+                questionText += `<pre>${parts[j]}</pre>`;
+              }
+            }
+          }
+          
+          questionDiv.innerHTML = `
+            <div class="question-header">
+              <div class="question-text"><strong>Q${idx + 1}:</strong> ${questionText}</div>
+              <span class="${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓ Correct' : '✗ Incorrect'}</span>
+            </div>
+            <div class="answer-section">
+              <div class="answer-item">
+                <div class="answer-label">Your Answer</div>
+                <span class="${isCorrect ? 'correct' : 'wrong'}">${userAnswer}</span>
+              </div>
+              <div class="answer-item">
+                <div class="answer-label">Correct Answer</div>
+                <span class="correct">${correctAnswer || 'N/A'}</span>
+              </div>
+            </div>
+            ${q.explanation ? `
+            <div class="explanation">
+              <strong>Explanation:</strong> ${q.explanation}
+            </div>
+            ` : ''}
+          `;
+          questionsContainer.appendChild(questionDiv);
+        });
+        
+        card.appendChild(questionsContainer);
+      }
+
+      // Add delete button for individual quiz
+      const cardControls = document.createElement('div');
+      cardControls.className = 'card-controls';
+      cardControls.innerHTML = `
+        <button class="delete-card-btn" onclick="showDeleteQuizModal(${index})">
+          🗑️ Delete This Quiz
+        </button>
+      `;
+      card.appendChild(cardControls);
+      
+      return card;
+    }
+
+    function calculateEfficiency(score, total, timeTaken) {
+      if (!score || !total || !timeTaken) return 'N/A';
+      
+      const accuracy = (score / total) * 100;
+      const timePerQuestion = timeTaken / total;
+      
+      if (accuracy >= 80 && timePerQuestion <= 30) {
+        return 'Excellent ⭐';
+      } else if (accuracy >= 60 && timePerQuestion <= 45) {
+        return 'Good 👍';
+      } else if (accuracy >= 40) {
+        return 'Average 📊';
+      } else {
+        return 'Needs Improvement 📚';
+      }
+    }
+
+    function showDeleteQuizModal(index) {
+      currentDeleteIndex = index;
+      document.getElementById('deleteQuizModal').style.display = 'flex';
+    }
+
+    async function confirmDeleteQuiz() {
+      if (currentDeleteIndex === null) return;
+      
+      try {
+        const username = localStorage.getItem('username');
+        const quizToDelete = allHistory[currentDeleteIndex];
+        
+        console.log('Deleting quiz:', quizToDelete.timestamp);
+        
+        const response = await fetch('/delete_quiz', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            username: username,
+            timestamp: quizToDelete.timestamp
+          })
+        });
+
+        const result = await response.json();
+        console.log('Delete response:', result);
+
+        if (response.ok && result.success) {
+          // Remove from local array and refresh display
+          allHistory.splice(currentDeleteIndex, 1);
+          filterHistory();
+          closeModal();
+          showNotification('Quiz deleted successfully!', 'success');
+        } else {
+          throw new Error(result.error || 'Failed to delete quiz');
+        }
+      } catch (error) {
+        console.error('Error deleting quiz:', error);
+        showNotification('Error deleting quiz: ' + error.message, 'error');
+      }
+    }
+
+    function clearFilters() {
+      document.getElementById('topicFilter').value = '';
+      document.getElementById('scoreFilter').value = '';
+      document.getElementById('dateFilter').value = '';
+      document.getElementById('timeFilter').value = '';
+      filterHistory();
+    }
+
+    function showClearModal() {
+      document.getElementById('clearModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('clearModal').style.display = 'none';
+      document.getElementById('deleteQuizModal').style.display = 'none';
+      currentDeleteIndex = null;
+    }
+
+    async function confirmClearHistory() {
+      try {
+        const username = localStorage.getItem('username');
+        const response = await fetch('/clear_history', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username: username })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          closeModal();
+          allHistory = [];
+          showEmptyState();
+          showNotification(`History cleared successfully! Removed ${result.deletedCount} items.`, 'success');
+        } else {
+          throw new Error(result.error || 'Failed to clear history');
+        }
+      } catch (error) {
+        console.error('Error clearing history:', error);
+        showNotification('Error clearing history: ' + error.message, 'error');
+      }
+    }
+
+    function exportHistory() {
+      if (allHistory.length === 0) {
+        showNotification('No history to export', 'error');
+        return;
+      }
+
+      const dataStr = JSON.stringify(allHistory, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `quiz-history-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      showNotification('History exported successfully!', 'success');
+    }
+
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    function showEmptyState() {
+      const container = document.getElementById('historyContainer');
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <h3>No Quiz History Found</h3>
+          <p>You haven't taken any quizzes yet. Start your learning journey by taking your first quiz!</p>
+          <button class="primary-btn" onclick="window.location.href='topics.html'">Take a Quiz</button>
+          <button class="login-btn" onclick="goToLogin()" style="margin-top: 10px;">Go to Login</button>
+        </div>
+      `;
+    }
+
+    function showErrorState() {
+      const container = document.getElementById('historyContainer');
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">⚠️</div>
+          <h3>Error Loading History</h3>
+          <p>There was a problem loading your quiz history. Please try again later.</p>
+          <button class="primary-btn" onclick="loadHistory()">Retry</button>
+          <button class="login-btn" onclick="goToLogin()" style="margin-top: 10px;">Go to Login</button>
+        </div>
+      `;
+    }
+
+    function goToLogin() {
+      localStorage.removeItem('username');
+      window.location.href = 'index.html';
+    }
+
+    // Load history when page loads
+    document.addEventListener('DOMContentLoaded', loadHistory);
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const clearModal = document.getElementById('clearModal');
+      const deleteModal = document.getElementById('deleteQuizModal');
+      
+      if (event.target === clearModal) {
+        closeModal();
+      }
+      if (event.target === deleteModal) {
+        closeModal();
+      }
+    }
+  </script>
+</body>
+</html>

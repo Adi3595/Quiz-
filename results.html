@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Results</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(55, 65, 81, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 50px 40px;
+      border-radius: 20px;
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.7s ease-in;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: #d1d5db;
+    }
+
+    .score {
+      font-size: 3rem;
+      font-weight: bold;
+      margin: 25px 0;
+      padding: 25px;
+      border-radius: 15px;
+      background: rgba(17, 24, 39, 0.6);
+      border: 3px solid;
+      transition: all 0.3s ease;
+    }
+
+    .time-info {
+      margin: 15px 0;
+      padding: 15px;
+      background: rgba(17, 24, 39, 0.6);
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .time-stats {
+      font-size: 1rem;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    button {
+      padding: 15px 35px;
+      margin-top: 30px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      margin: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .emoji {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .message {
+      font-size: 1.1rem;
+      color: #9ca3af;
+      margin: 15px 0;
+      line-height: 1.5;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .secondary-btn {
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    }
+
+    /* Floating background elements */
+    .floating-bg {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      animation: float 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .floating-bg:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-bg:nth-child(2) {
+      top: 60%;
+      right: 10%;
+      animation-delay: -2s;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+    }
+
+    .floating-bg:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      animation-delay: -4s;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating background elements -->
+  <div class="floating-bg"></div>
+  <div class="floating-bg"></div>
+  <div class="floating-bg"></div>
+
+  <div class="container">
+    <div class="emoji" id="emoji">🎉</div>
+    <h1>Quiz Completed!</h1>
+    <h2>Your Score</h2>
+    <div id="score" class="score"></div>
+    
+    <!-- Time Information -->
+    <div class="time-info">
+      <div style="font-size: 1.1rem; color: #d1d5db; margin-bottom: 8px;">
+        ⏱️ Time Statistics
+      </div>
+      <div id="time-stats" class="time-stats">
+        Loading time data...
+      </div>
+    </div>
+    
+    <div class="message" id="message"></div>
+    <div class="button-container">
+      <button onclick="goToTopics()">Try Another Quiz</button>
+      <button class="secondary-btn" onclick="goToReview()">Review Answers</button>
+      <button onclick="viewHistory()">View History</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const score = parseInt(localStorage.getItem('score')) || 0;
+      const questions = JSON.parse(localStorage.getItem('questions') || '[]');
+      const total = questions.length || 10;
+      const percentage = total > 0 ? (score / total) * 100 : 0;
+      const timeTaken = parseInt(localStorage.getItem('time_taken')) || 0;
+      const avgTimePerQuestion = parseFloat(localStorage.getItem('average_time_per_question')) || 0;
+      
+      const scoreDiv = document.getElementById('score');
+      const emoji = document.getElementById('emoji');
+      const message = document.getElementById('message');
+      
+      // Set score color and message based on percentage
+      let scoreColor, scoreMessage, scoreEmoji;
+      
+      if (percentage >= 90) {
+        scoreColor = '#10b981';
+        scoreMessage = 'Outstanding! You nailed it! 🏆';
+        scoreEmoji = '🎯';
+      } else if (percentage >= 80) {
+        scoreColor = '#22c55e';
+        scoreMessage = 'Excellent work! You\'re doing great! 🌟';
+        scoreEmoji = '⭐';
+      } else if (percentage >= 70) {
+        scoreColor = '#84cc16';
+        scoreMessage = 'Good job! Keep practicing! 💪';
+        scoreEmoji = '👍';
+      } else if (percentage >= 60) {
+        scoreColor = '#eab308';
+        scoreMessage = 'Not bad! You\'re getting there! 📚';
+        scoreEmoji = '📖';
+      } else if (percentage >= 50) {
+        scoreColor = '#f59e0b';
+        scoreMessage = 'You passed! Keep learning! 🔍';
+        scoreEmoji = '✅';
+      } else {
+        scoreColor = '#ef4444';
+        scoreMessage = 'Don\'t give up! Review and try again! 💫';
+        scoreEmoji = '🔄';
+      }
+      
+      scoreDiv.style.borderColor = scoreColor;
+      scoreDiv.style.color = scoreColor;
+      scoreDiv.innerHTML = `${score}/${total}<br><small style="font-size: 1.5rem;">${percentage.toFixed(1)}%</small>`;
+      
+      emoji.textContent = scoreEmoji;
+      message.textContent = scoreMessage;
+      
+      // Update time statistics
+      const timeStats = document.getElementById('time-stats');
+      if (timeStats) {
+        const minutes = Math.floor(timeTaken / 60);
+        const seconds = timeTaken % 60;
+        timeStats.innerHTML = `
+          Total Time: ${minutes}m ${seconds}s<br>
+          Average per Question: ${avgTimePerQuestion}s
+        `;
+      }
+    });
+
+    function goToTopics() {
+      window.location.href = 'topics.html';
+    }
+
+    function goToReview() {
+      window.location.href = 'review.html';
+    }
+
+    function viewHistory() {
+      window.location.href = 'history.html';
+    }
+  </script>
+</body>
+</html>

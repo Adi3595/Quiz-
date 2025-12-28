@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Topic</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      text-align: center;
+      color: #f3f4f6;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .welcome-message {
+      text-align: center;
+      color: #d1d5db;
+      margin-bottom: 10px;
+    }
+
+    .topic-section {
+      background: rgba(55, 65, 81, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      margin-top: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #d1d5db;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: rgba(17, 24, 39, 0.6);
+      color: white;
+      font-size: 16px;
+      text-align: center;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: #3b82f6;
+      outline: none;
+    }
+
+    button {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 30px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .history-btn {
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    }
+
+    .history-btn:hover {
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    /* Subtopic Selection Styles */
+    .subtopic-section {
+      display: none;
+      background: rgba(55, 65, 81, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      margin-top: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .subtopic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .subtopic-card {
+      background: rgba(75, 85, 99, 0.6);
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .subtopic-card:hover {
+      background: rgba(107, 114, 128, 0.8);
+      border-color: #3b82f6;
+      transform: translateY(-2px);
+    }
+
+    .subtopic-card.selected {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+      transform: translateY(-2px);
+    }
+
+    .subtopic-card input {
+      display: none;
+    }
+
+    .selection-count {
+      text-align: center;
+      margin: 15px 0;
+      color: #9ca3af;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    #generateQuizBtn {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    #generateQuizBtn:disabled {
+      background: #6b7280;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .loading-spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(59, 130, 246, 0.3);
+      border-top: 3px solid #3b82f6;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Floating background elements */
+    .floating-bg {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+      animation: float 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .floating-bg:nth-child(1) {
+      top: 10%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-bg:nth-child(2) {
+      top: 60%;
+      right: 10%;
+      animation-delay: -2s;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+    }
+
+    .floating-bg:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      animation-delay: -4s;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    /* Timer info styles */
+    .timer-info {
+      background: rgba(59, 130, 246, 0.1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 3px solid #3b82f6;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating background elements -->
+  <div class="floating-bg"></div>
+  <div class="floating-bg"></div>
+  <div class="floating-bg"></div>
+
+  <div class="container">
+    <h2>Create Your Quiz</h2>
+    
+    <div class="welcome-message" id="welcomeMessage">
+      Welcome back! Ready to learn?
+    </div>
+
+    <div class="header">
+      <div></div> <!-- Empty div for spacing -->
+      <button class="history-btn" onclick="viewHistory()">
+        📊 View History
+      </button>
+    </div>
+    
+    <div class="topic-section">
+      <div class="input-group">
+        <label for="topic">Enter Topic</label>
+        <input type="text" id="topic" placeholder="e.g., Python Programming, Data Structures, Web Development...">
+      </div>
+      
+      <div class="input-group">
+        <label for="numQuestions">Number of Questions</label>
+        <select id="numQuestions">
+          <option value="5">5 Questions</option>
+          <option value="10" selected>10 Questions</option>
+          <option value="15">15 Questions</option>
+          <option value="20">20 Questions</option>
+        </select>
+      </div>
+
+      <!-- NEW: Timer Duration Selection -->
+      <div class="input-group">
+        <label for="timerDuration">Timer Duration</label>
+        <select id="timerDuration">
+          <option value="60">1 Minute</option>
+          <option value="300">5 Minutes</option>
+          <option value="600" selected>10 Minutes</option>
+          <option value="900">15 Minutes</option>
+          <option value="1800">30 Minutes</option>
+          <option value="3600">1 Hour</option>
+          <option value="0">No Timer</option>
+        </select>
+      </div>
+
+      <div id="timerInfo" class="timer-info">
+        ⏰ <strong>Timer:</strong> 10 minutes total
+      </div>
+      
+      <div style="text-align: center;">
+        <button onclick="getSubtopics()" style="width: 200px;">Get Subtopics</button>
+      </div>
+    </div>
+
+    <div class="subtopic-section" id="subtopicSection">
+      <h3>Select Subtopics</h3>
+      <p class="selection-count" id="selectionCount">Select at least 1 subtopic</p>
+      
+      <div class="subtopic-grid" id="subtopicGrid">
+        <!-- Subtopics will be loaded here -->
+      </div>
+      
+      <div class="action-buttons">
+        <button onclick="selectAllSubtopics()">Select All</button>
+        <button onclick="clearSelection()">Clear All</button>
+        <button id="generateQuizBtn" onclick="generateQuiz()" disabled>Generate Quiz</button>
+      </div>
+    </div>
+
+    <div class="loading" id="loading" style="display: none;">
+      <div class="loading-spinner"></div>
+      <p>Loading subtopics...</p>
+    </div>
+  </div>
+
+  <script>
+    let availableSubtopics = [];
+
+    // Set welcome message
+    document.addEventListener('DOMContentLoaded', function() {
+      const username = localStorage.getItem('username') || 'Guest';
+      document.getElementById('welcomeMessage').textContent = `Welcome back, ${username}! Ready to learn?`;
+      
+      // Add event listener for timer duration change
+      document.getElementById('timerDuration').addEventListener('change', updateTimerInfo);
+    });
+
+    function updateTimerInfo() {
+      const timerDuration = document.getElementById('timerDuration').value;
+      const timerInfo = document.getElementById('timerInfo');
+      
+      if (timerDuration === "0") {
+        timerInfo.innerHTML = "⏰ <strong>No Timer:</strong> Take your time, no pressure!";
+      } else {
+        const minutes = Math.floor(timerDuration / 60);
+        const timerText = minutes >= 60 ? 
+          `${Math.floor(minutes / 60)} hour${Math.floor(minutes / 60) > 1 ? 's' : ''} ${minutes % 60 > 0 ? `${minutes % 60} minute${minutes % 60 > 1 ? 's' : ''}` : ''}`.trim() :
+          `${minutes} minute${minutes > 1 ? 's' : ''}`;
+        
+        timerInfo.innerHTML = `⏰ <strong>Timer:</strong> ${timerText} total`;
+      }
+    }
+
+    function getSubtopics() {
+      const topic = document.getElementById('topic').value.trim();
+      if (!topic) {
+        alert('Please enter a topic');
+        return;
+      }
+
+      document.getElementById('loading').style.display = 'block';
+      
+      fetch('/get_subtopics', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ topic: topic, count: 10 })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('loading').style.display = 'none';
+        
+        if (data.subtopics && data.subtopics.length > 0) {
+          availableSubtopics = data.subtopics;
+          displaySubtopics(data.subtopics);
+          document.getElementById('subtopicSection').style.display = 'block';
+        } else {
+          alert('No subtopics found for this topic. Please try a different topic.');
+        }
+      })
+      .catch(err => {
+        document.getElementById('loading').style.display = 'none';
+        console.error('Error:', err);
+        alert('Error fetching subtopics');
+      });
+    }
+
+    function displaySubtopics(subtopics) {
+      const grid = document.getElementById('subtopicGrid');
+      grid.innerHTML = '';
+      
+      subtopics.forEach((subtopic, index) => {
+        const card = document.createElement('div');
+        card.className = 'subtopic-card';
+        card.innerHTML = `
+          <input type="checkbox" id="subtopic-${index}" value="${subtopic}">
+          <label for="subtopic-${index}" class="subtopic-name">${subtopic}</label>
+        `;
+        
+        card.addEventListener('click', () => {
+          const checkbox = card.querySelector('input');
+          checkbox.checked = !checkbox.checked;
+          card.classList.toggle('selected', checkbox.checked);
+          updateSelectionCount();
+        });
+        
+        grid.appendChild(card);
+      });
+      
+      updateSelectionCount();
+    }
+
+    function updateSelectionCount() {
+      const selected = document.querySelectorAll('.subtopic-card input:checked');
+      const count = selected.length;
+      const countElement = document.getElementById('selectionCount');
+      const generateBtn = document.getElementById('generateQuizBtn');
+      
+      countElement.textContent = `${count} subtopic${count !== 1 ? 's' : ''} selected`;
+      
+      // Enable/disable generate button
+      generateBtn.disabled = count === 0;
+    }
+
+    function selectAllSubtopics() {
+      document.querySelectorAll('.subtopic-card input').forEach(checkbox => {
+        checkbox.checked = true;
+        checkbox.parentElement.classList.add('selected');
+      });
+      updateSelectionCount();
+    }
+
+    function clearSelection() {
+      document.querySelectorAll('.subtopic-card input').forEach(checkbox => {
+        checkbox.checked = false;
+        checkbox.parentElement.classList.remove('selected');
+      });
+      updateSelectionCount();
+    }
+
+    function generateQuiz() {
+      const selectedSubtopics = Array.from(document.querySelectorAll('.subtopic-card input:checked'))
+        .map(checkbox => checkbox.value);
+      
+      const topic = document.getElementById('topic').value.trim();
+      const numQuestions = document.getElementById('numQuestions').value;
+      const timerDuration = document.getElementById('timerDuration').value;
+      const username = localStorage.getItem('username') || 'Guest';
+
+      if (!topic || selectedSubtopics.length === 0) {
+        alert('Please select at least one subtopic');
+        return;
+      }
+
+      // Store data for quiz page
+      localStorage.setItem('topic', topic);
+      localStorage.setItem('subtopics', JSON.stringify(selectedSubtopics));
+      localStorage.setItem('num_questions', numQuestions);
+      localStorage.setItem('timer_duration', timerDuration);
+
+      // Redirect to quiz page
+      window.location.href = 'quiz.html';
+    }
+
+    function viewHistory() {
+      window.location.href = 'history.html';
+    }
+
+    // Allow Enter key to get subtopics
+    document.getElementById('topic').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        getSubtopics();
+      }
+    });
+  </script>
+</body>
+</html>
