@@ -83,6 +83,11 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 
 ## Contributing
 
+### Contributors
+
+- VenomXD21
+- Adi3595
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
