@@ -88,6 +88,3 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 3. Make your changes
 4. Submit a pull request
 
-## License
-
-This project is open-source. Please check the license file for details.
