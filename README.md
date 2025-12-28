@@ -24,7 +24,7 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 
 1. Clone the repository:
    ```
-   git clone <repository-url>
+   git clone <https://github.com/Adi3595/Quiz->
    cd final-oop
    ```
 
