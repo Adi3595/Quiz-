@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Choose Topic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>QUIZ++ | Choose Your Path</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
     * {
       margin: 0;
       padding: 0;
@@ -13,205 +14,339 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-      color: white;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #040404;
+      color: #eef2ff;
       min-height: 100vh;
-      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+      padding: 1.5rem;
+    }
+
+    /* Premium animated gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 30% 20%, #1F1F1F 0%, #040404 90%);
+      z-index: -2;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -15%;
+      left: -5%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(circle, rgba(0, 200, 150, 0.12), transparent 75%);
+      filter: blur(90px);
+      z-index: -1;
+      animation: auraFloat 14s infinite alternate ease-in-out;
+    }
+
+    @keyframes auraFloat {
+      0% { opacity: 0.3; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0.8; transform: translate(8%, 6%) scale(1.25); }
+    }
+
+    /* Floating particles background */
+    .particle-field {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #00C896;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: floatParticle 18s infinite linear;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      15% { opacity: 0.6; }
+      85% { opacity: 0.4; }
+      100% { transform: translateY(-20vh) scale(0.8); opacity: 0; }
+    }
+
+    /* Cursor glow effect */
+    .cursor-glow {
+      position: fixed;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(0, 200, 150, 0.15), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s linear;
+      filter: blur(45px);
+      will-change: transform;
     }
 
     .container {
-      width: 90%;
-      max-width: 800px;
+      width: 100%;
+      max-width: 900px;
       margin: auto;
-      padding: 40px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 10;
     }
 
-    h2 {
-      text-align: center;
-      color: #f3f4f6;
-      font-weight: 700;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* Main card */
+    .main-card {
+      background: rgba(18, 18, 22, 0.75);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      padding: 2.2rem 2rem;
+      border: 1px solid rgba(0, 200, 150, 0.25);
+      box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.6), inset 0 0 0 0.5px rgba(0, 200, 150, 0.1);
+      transition: all 0.4s ease;
+      width: 100%;
     }
 
+    .main-card:hover {
+      border-color: rgba(0, 200, 150, 0.45);
+      box-shadow: 0 35px 55px -20px rgba(0, 200, 150, 0.2);
+    }
+
+    /* Header section */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       width: 100%;
-      max-width: 800px;
-      margin-bottom: 30px;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 1rem;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff, #00C896, #a0f0e0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.25rem;
     }
 
     .welcome-message {
-      text-align: center;
-      color: #d1d5db;
-      margin-bottom: 10px;
-    }
-
-    .topic-section {
-      background: rgba(55, 65, 81, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 20px;
-      margin-top: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-      width: 100%;
-      max-width: 800px;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .input-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #d1d5db;
+      background: rgba(0, 200, 150, 0.1);
+      padding: 0.5rem 1.2rem;
+      border-radius: 3rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      text-align: left;
+      color: #b3ffe6;
+      display: inline-block;
+      backdrop-filter: blur(4px);
+      border: 0.5px solid rgba(0, 200, 150, 0.3);
     }
 
-    .input-group input, .input-group select {
-      width: 100%;
-      padding: 12px 15px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      background: rgba(17, 24, 39, 0.6);
-      color: white;
-      font-size: 16px;
-      text-align: center;
-    }
-
-    .input-group input:focus, .input-group select:focus {
-      border-color: #3b82f6;
-      outline: none;
-    }
-
-    button {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      border: none;
-      border-radius: 10px;
-      padding: 12px 30px;
+    .history-btn {
+      background: linear-gradient(105deg, #1F2A26, #0f1512);
+      border: 1px solid rgba(0, 200, 150, 0.5);
+      border-radius: 3rem;
+      padding: 0.7rem 1.4rem;
       color: white;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .history-btn:hover {
+      transform: translateY(-2px);
+      border-color: #00ffcc;
+      box-shadow: 0 8px 20px rgba(0, 200, 150, 0.25);
+    }
+
+    /* Input groups */
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #cbd5e6;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.3px;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      border: 1.5px solid rgba(0, 200, 150, 0.3);
+      border-radius: 3rem;
+      background: rgba(4, 4, 4, 0.7);
+      color: #f0f3fa;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.25s ease;
+      outline: none;
+    }
+
+    .input-group input:focus, .input-group select:focus {
+      border-color: #00C896;
+      box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .timer-info {
+      background: rgba(0, 200, 150, 0.08);
+      padding: 0.7rem 1rem;
+      border-radius: 3rem;
+      margin: 1rem 0;
+      border-left: 3px solid #00C896;
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    button {
+      background: linear-gradient(105deg, #1F1F1F, #0a0a0a);
+      border: 1px solid rgba(0, 200, 150, 0.55);
+      border-radius: 3rem;
+      padding: 0.85rem 2rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: #f5f9ff;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      width: auto;
+      min-width: 180px;
     }
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+      border-color: #00ffcc;
+      box-shadow: 0 8px 20px rgba(0, 200, 150, 0.3);
     }
 
-    .history-btn {
-      background: linear-gradient(135deg, #8b5cf6, #ec4899);
-    }
-
-    .history-btn:hover {
-      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4);
-    }
-
-    /* Subtopic Selection Styles */
+    /* Subtopic section */
     .subtopic-section {
       display: none;
-      background: rgba(55, 65, 81, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 30px;
-      border-radius: 20px;
-      margin-top: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(18, 18, 22, 0.75);
+      backdrop-filter: blur(20px);
+      padding: 1.8rem;
+      border-radius: 1.8rem;
+      margin-top: 1.5rem;
+      border: 1px solid rgba(0, 200, 150, 0.25);
       width: 100%;
-      max-width: 800px;
-      text-align: center;
+      animation: fadeSlideUp 0.5s ease;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .subtopic-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin: 20px 0;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 0.8rem;
+      margin: 1.5rem 0;
     }
 
     .subtopic-card {
-      background: rgba(75, 85, 99, 0.6);
-      border: 2px solid transparent;
-      border-radius: 10px;
-      padding: 15px;
+      background: rgba(30, 30, 38, 0.7);
+      border: 1.5px solid rgba(0, 200, 150, 0.2);
+      border-radius: 3rem;
+      padding: 0.9rem 1rem;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       text-align: center;
+      font-weight: 500;
     }
 
     .subtopic-card:hover {
-      background: rgba(107, 114, 128, 0.8);
-      border-color: #3b82f6;
+      background: rgba(0, 200, 150, 0.1);
+      border-color: #00C896;
       transform: translateY(-2px);
     }
 
     .subtopic-card.selected {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: #10b981;
-      transform: translateY(-2px);
+      background: rgba(0, 200, 150, 0.2);
+      border-color: #00C896;
+      box-shadow: 0 0 12px rgba(0, 200, 150, 0.3);
     }
 
     .subtopic-card input {
       display: none;
     }
 
+    .subtopic-name {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
     .selection-count {
       text-align: center;
-      margin: 15px 0;
-      color: #9ca3af;
+      margin: 0.5rem 0;
+      color: #a0b3c9;
+      font-size: 0.85rem;
     }
 
     .action-buttons {
       display: flex;
-      gap: 15px;
+      gap: 1rem;
       justify-content: center;
-      margin-top: 20px;
       flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .action-buttons button {
+      min-width: 120px;
+      padding: 0.7rem 1.2rem;
     }
 
     #generateQuizBtn {
-      background: linear-gradient(135deg, #10b981, #059669);
+      background: linear-gradient(105deg, #0f3b2c, #0a2a1f);
+      border-color: #00C896;
     }
 
     #generateQuizBtn:disabled {
-      background: #6b7280;
+      opacity: 0.5;
       cursor: not-allowed;
       transform: none;
     }
 
     .loading {
       text-align: center;
-      margin: 20px 0;
+      margin: 2rem 0;
     }
 
     .loading-spinner {
-      width: 30px;
-      height: 30px;
-      border: 3px solid rgba(59, 130, 246, 0.3);
-      border-top: 3px solid #3b82f6;
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(0, 200, 150, 0.2);
+      border-top: 3px solid #00C896;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto;
+      margin: 0 auto 1rem;
     }
 
     @keyframes spin {
@@ -219,281 +354,282 @@
       100% { transform: rotate(360deg); }
     }
 
-    /* Floating background elements */
-    .floating-bg {
-      position: fixed;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-      animation: float 8s ease-in-out infinite;
-      z-index: -1;
-    }
-
-    .floating-bg:nth-child(1) {
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .floating-bg:nth-child(2) {
-      top: 60%;
-      right: 10%;
-      animation-delay: -2s;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-    }
-
-    .floating-bg:nth-child(3) {
-      bottom: 20%;
-      left: 20%;
-      animation-delay: -4s;
-      background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-    }
-
-    /* Timer info styles */
-    .timer-info {
-      background: rgba(59, 130, 246, 0.1);
-      padding: 10px 15px;
-      border-radius: 8px;
-      margin: 10px 0;
-      border-left: 3px solid #3b82f6;
-      font-size: 0.9rem;
+    /* Responsive */
+    @media (max-width: 640px) {
+      body { padding: 1rem; }
+      .main-card { padding: 1.5rem; }
+      h2 { font-size: 1.8rem; }
+      .subtopic-grid { grid-template-columns: 1fr; }
+      button { width: 100%; }
+      .action-buttons button { width: auto; }
     }
   </style>
 </head>
 <body>
-  <!-- Floating background elements -->
-  <div class="floating-bg"></div>
-  <div class="floating-bg"></div>
-  <div class="floating-bg"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="particle-field" id="particleField"></div>
 
-  <div class="container">
-    <h2>Create Your Quiz</h2>
-    
-    <div class="welcome-message" id="welcomeMessage">
-      Welcome back! Ready to learn?
-    </div>
-
+<div class="container">
+  <div class="main-card">
     <div class="header">
-      <div></div> <!-- Empty div for spacing -->
-      <button class="history-btn" onclick="viewHistory()">
-        📊 View History
-      </button>
+      <div></div>
+      <h2>✦ Topics of Quiz ✦</h2>
+      <button class="history-btn" onclick="viewHistory()">📊 History</button>
     </div>
     
-    <div class="topic-section">
-      <div class="input-group">
-        <label for="topic">Enter Topic</label>
-        <input type="text" id="topic" placeholder="e.g., Python Programming, Data Structures, Web Development...">
-      </div>
-      
-      <div class="input-group">
-        <label for="numQuestions">Number of Questions</label>
-        <select id="numQuestions">
-          <option value="5">5 Questions</option>
-          <option value="10" selected>10 Questions</option>
-          <option value="15">15 Questions</option>
-          <option value="20">20 Questions</option>
-        </select>
-      </div>
+    <div class="welcome-message" id="welcomeMessage">Welcome back · ready to ascend?</div>
 
-      <!-- NEW: Timer Duration Selection -->
-      <div class="input-group">
-        <label for="timerDuration">Timer Duration</label>
-        <select id="timerDuration">
-          <option value="60">1 Minute</option>
-          <option value="300">5 Minutes</option>
-          <option value="600" selected>10 Minutes</option>
-          <option value="900">15 Minutes</option>
-          <option value="1800">30 Minutes</option>
-          <option value="3600">1 Hour</option>
-          <option value="0">No Timer</option>
-        </select>
-      </div>
-
-      <div id="timerInfo" class="timer-info">
-        ⏰ <strong>Timer:</strong> 10 minutes total
-      </div>
-      
-      <div style="text-align: center;">
-        <button onclick="getSubtopics()" style="width: 200px;">Get Subtopics</button>
-      </div>
+    <div class="input-group">
+      <label for="topic">🎯 Choose your topic</label>
+      <input type="text" id="topic" placeholder="e.g., Artificial Intelligence, Quantum Physics, Design Systems">
+    </div>
+    
+    <div class="input-group">
+      <label for="numQuestions">📋 Number of questions</label>
+      <select id="numQuestions">
+        <option value="5">5 questions</option>
+        <option value="10" selected>10 questions</option>
+        <option value="15">15 questions</option>
+        <option value="20">20 questions</option>
+      </select>
     </div>
 
-    <div class="subtopic-section" id="subtopicSection">
-      <h3>Select Subtopics</h3>
-      <p class="selection-count" id="selectionCount">Select at least 1 subtopic</p>
-      
-      <div class="subtopic-grid" id="subtopicGrid">
-        <!-- Subtopics will be loaded here -->
-      </div>
-      
-      <div class="action-buttons">
-        <button onclick="selectAllSubtopics()">Select All</button>
-        <button onclick="clearSelection()">Clear All</button>
-        <button id="generateQuizBtn" onclick="generateQuiz()" disabled>Generate Quiz</button>
-      </div>
+    <div class="input-group">
+      <label for="timerDuration">⏱️ Timer duration</label>
+      <select id="timerDuration">
+        <option value="60">1 minute</option>
+        <option value="300">5 minutes</option>
+        <option value="600" selected>10 minutes</option>
+        <option value="900">15 minutes</option>
+        <option value="1800">30 minutes</option>
+        <option value="3600">1 hour</option>
+        <option value="0">No timer (relaxed)</option>
+      </select>
     </div>
 
-    <div class="loading" id="loading" style="display: none;">
-      <div class="loading-spinner"></div>
-      <p>Loading subtopics...</p>
+    <div id="timerInfo" class="timer-info">⏰ Timer: 10 minutes total</div>
+    
+    <div style="text-align: center;">
+      <button id="getSubtopicsBtn" onclick="getSubtopics()">✨ Discover subtopics</button>
     </div>
   </div>
 
-  <script>
-    let availableSubtopics = [];
+  <div class="subtopic-section" id="subtopicSection">
+    <h3 style="text-align:center;">🎯 Select your focus areas</h3>
+    <p class="selection-count" id="selectionCount">Select at least 1 subtopic</p>
+    <div class="subtopic-grid" id="subtopicGrid"></div>
+    <div class="action-buttons">
+      <button onclick="selectAllSubtopics()">Select all</button>
+      <button onclick="clearSelection()">Clear all</button>
+      <button id="generateQuizBtn" onclick="generateQuiz()" disabled>🚀 Generate quiz</button>
+    </div>
+  </div>
 
-    // Set welcome message
-    document.addEventListener('DOMContentLoaded', function() {
-      const username = localStorage.getItem('username') || 'Guest';
-      document.getElementById('welcomeMessage').textContent = `Welcome back, ${username}! Ready to learn?`;
-      
-      // Add event listener for timer duration change
-      document.getElementById('timerDuration').addEventListener('change', updateTimerInfo);
+  <div class="loading" id="loading" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p>Loading cosmic subtopics ...</p>
+  </div>
+</div>
+
+<script>
+  // Cursor glow effect
+  const cursorGlow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', (e) => {
+    cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  });
+
+  // Generate floating particles
+  function createParticles() {
+    const container = document.getElementById('particleField');
+    if (!container) return;
+    for (let i = 0; i < 70; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      const size = Math.random() * 5 + 2;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+      particle.style.animationDelay = `${Math.random() * 15}s`;
+      particle.style.background = `#00C896`;
+      particle.style.opacity = Math.random() * 0.5 + 0.2;
+      container.appendChild(particle);
+    }
+  }
+  createParticles();
+
+  let availableSubtopics = [];
+
+  // Set welcome message
+  document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username') || 'Explorer';
+    document.getElementById('welcomeMessage').innerHTML = `✨ Welcome back, ${username} ✨`;
+    
+    const timerSelect = document.getElementById('timerDuration');
+    timerSelect.addEventListener('change', updateTimerInfo);
+    updateTimerInfo();
+
+    // Enter key for topic
+    document.getElementById('topic').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') getSubtopics();
     });
+  });
 
-    function updateTimerInfo() {
-      const timerDuration = document.getElementById('timerDuration').value;
-      const timerInfo = document.getElementById('timerInfo');
+  function updateTimerInfo() {
+    const timerDuration = document.getElementById('timerDuration').value;
+    const timerInfo = document.getElementById('timerInfo');
+    
+    if (timerDuration === "0") {
+      timerInfo.innerHTML = "⏰ <strong>No timer:</strong> Take your time, no pressure!";
+    } else {
+      const minutes = Math.floor(timerDuration / 60);
+      const timerText = minutes >= 60 ? 
+        `${Math.floor(minutes / 60)} hour${Math.floor(minutes / 60) > 1 ? 's' : ''} ${minutes % 60 > 0 ? `${minutes % 60} minute${minutes % 60 > 1 ? 's' : ''}` : ''}`.trim() :
+        `${minutes} minute${minutes > 1 ? 's' : ''}`;
       
-      if (timerDuration === "0") {
-        timerInfo.innerHTML = "⏰ <strong>No Timer:</strong> Take your time, no pressure!";
-      } else {
-        const minutes = Math.floor(timerDuration / 60);
-        const timerText = minutes >= 60 ? 
-          `${Math.floor(minutes / 60)} hour${Math.floor(minutes / 60) > 1 ? 's' : ''} ${minutes % 60 > 0 ? `${minutes % 60} minute${minutes % 60 > 1 ? 's' : ''}` : ''}`.trim() :
-          `${minutes} minute${minutes > 1 ? 's' : ''}`;
-        
-        timerInfo.innerHTML = `⏰ <strong>Timer:</strong> ${timerText} total`;
-      }
+      timerInfo.innerHTML = `⏰ <strong>Timer:</strong> ${timerText} total`;
+    }
+  }
+
+  async function getSubtopics() {
+    const topic = document.getElementById('topic').value.trim();
+    if (!topic) {
+      alert('Please enter a topic');
+      return;
     }
 
-    function getSubtopics() {
-      const topic = document.getElementById('topic').value.trim();
-      if (!topic) {
-        alert('Please enter a topic');
-        return;
-      }
-
-      document.getElementById('loading').style.display = 'block';
-      
-      fetch('/get_subtopics', {
+    const loadingDiv = document.getElementById('loading');
+    const subtopicSection = document.getElementById('subtopicSection');
+    
+    loadingDiv.style.display = 'block';
+    subtopicSection.style.display = 'none';
+    
+    try {
+      const res = await fetch('/get_subtopics', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ topic: topic, count: 10 })
-      })
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('loading').style.display = 'none';
-        
-        if (data.subtopics && data.subtopics.length > 0) {
-          availableSubtopics = data.subtopics;
-          displaySubtopics(data.subtopics);
-          document.getElementById('subtopicSection').style.display = 'block';
-        } else {
-          alert('No subtopics found for this topic. Please try a different topic.');
-        }
-      })
-      .catch(err => {
-        document.getElementById('loading').style.display = 'none';
-        console.error('Error:', err);
-        alert('Error fetching subtopics');
       });
-    }
-
-    function displaySubtopics(subtopics) {
-      const grid = document.getElementById('subtopicGrid');
-      grid.innerHTML = '';
+      const data = await res.json();
       
-      subtopics.forEach((subtopic, index) => {
-        const card = document.createElement('div');
-        card.className = 'subtopic-card';
-        card.innerHTML = `
-          <input type="checkbox" id="subtopic-${index}" value="${subtopic}">
-          <label for="subtopic-${index}" class="subtopic-name">${subtopic}</label>
-        `;
-        
-        card.addEventListener('click', () => {
+      loadingDiv.style.display = 'none';
+      
+      if (data.subtopics && data.subtopics.length > 0) {
+        availableSubtopics = data.subtopics;
+        displaySubtopics(data.subtopics);
+        subtopicSection.style.display = 'block';
+        subtopicSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        alert('No subtopics found. Try a broader topic.');
+      }
+    } catch (err) {
+      loadingDiv.style.display = 'none';
+      console.error('Error:', err);
+      alert('Network error — please try again');
+    }
+  }
+
+  function displaySubtopics(subtopics) {
+    const grid = document.getElementById('subtopicGrid');
+    grid.innerHTML = '';
+    
+    subtopics.forEach((subtopic, index) => {
+      const card = document.createElement('div');
+      card.className = 'subtopic-card';
+      card.setAttribute('data-idx', index);
+      card.innerHTML = `
+        <input type="checkbox" id="subtopic-${index}" value="${subtopic.replace(/"/g, '&quot;')}">
+        <label for="subtopic-${index}" class="subtopic-name">${subtopic}</label>
+      `;
+      
+      card.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') {
           const checkbox = card.querySelector('input');
           checkbox.checked = !checkbox.checked;
           card.classList.toggle('selected', checkbox.checked);
           updateSelectionCount();
-        });
-        
-        grid.appendChild(card);
+        }
       });
       
-      updateSelectionCount();
-    }
-
-    function updateSelectionCount() {
-      const selected = document.querySelectorAll('.subtopic-card input:checked');
-      const count = selected.length;
-      const countElement = document.getElementById('selectionCount');
-      const generateBtn = document.getElementById('generateQuizBtn');
-      
-      countElement.textContent = `${count} subtopic${count !== 1 ? 's' : ''} selected`;
-      
-      // Enable/disable generate button
-      generateBtn.disabled = count === 0;
-    }
-
-    function selectAllSubtopics() {
-      document.querySelectorAll('.subtopic-card input').forEach(checkbox => {
-        checkbox.checked = true;
-        checkbox.parentElement.classList.add('selected');
+      const checkbox = card.querySelector('input');
+      checkbox.addEventListener('change', () => {
+        card.classList.toggle('selected', checkbox.checked);
+        updateSelectionCount();
       });
-      updateSelectionCount();
-    }
-
-    function clearSelection() {
-      document.querySelectorAll('.subtopic-card input').forEach(checkbox => {
-        checkbox.checked = false;
-        checkbox.parentElement.classList.remove('selected');
-      });
-      updateSelectionCount();
-    }
-
-    function generateQuiz() {
-      const selectedSubtopics = Array.from(document.querySelectorAll('.subtopic-card input:checked'))
-        .map(checkbox => checkbox.value);
       
-      const topic = document.getElementById('topic').value.trim();
-      const numQuestions = document.getElementById('numQuestions').value;
-      const timerDuration = document.getElementById('timerDuration').value;
-      const username = localStorage.getItem('username') || 'Guest';
-
-      if (!topic || selectedSubtopics.length === 0) {
-        alert('Please select at least one subtopic');
-        return;
-      }
-
-      // Store data for quiz page
-      localStorage.setItem('topic', topic);
-      localStorage.setItem('subtopics', JSON.stringify(selectedSubtopics));
-      localStorage.setItem('num_questions', numQuestions);
-      localStorage.setItem('timer_duration', timerDuration);
-
-      // Redirect to quiz page
-      window.location.href = 'quiz.html';
-    }
-
-    function viewHistory() {
-      window.location.href = 'history.html';
-    }
-
-    // Allow Enter key to get subtopics
-    document.getElementById('topic').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        getSubtopics();
-      }
+      grid.appendChild(card);
     });
-  </script>
+    
+    updateSelectionCount();
+  }
+
+  function updateSelectionCount() {
+    const selected = document.querySelectorAll('.subtopic-card input:checked');
+    const count = selected.length;
+    const countElement = document.getElementById('selectionCount');
+    const generateBtn = document.getElementById('generateQuizBtn');
+    
+    countElement.textContent = count === 0 ? '✨ Select at least 1 subtopic' : `🎯 ${count} subtopic${count !== 1 ? 's' : ''} selected`;
+    generateBtn.disabled = count === 0;
+  }
+
+  function selectAllSubtopics() {
+    document.querySelectorAll('.subtopic-card input').forEach(checkbox => {
+      checkbox.checked = true;
+      checkbox.parentElement.classList.add('selected');
+    });
+    updateSelectionCount();
+  }
+
+  function clearSelection() {
+    document.querySelectorAll('.subtopic-card input').forEach(checkbox => {
+      checkbox.checked = false;
+      checkbox.parentElement.classList.remove('selected');
+    });
+    updateSelectionCount();
+  }
+
+  function generateQuiz() {
+    const selectedSubtopics = Array.from(document.querySelectorAll('.subtopic-card input:checked'))
+      .map(checkbox => checkbox.value);
+    
+    const topic = document.getElementById('topic').value.trim();
+    const numQuestions = document.getElementById('numQuestions').value;
+    const timerDuration = document.getElementById('timerDuration').value;
+    const username = localStorage.getItem('username') || 'Explorer';
+
+    if (!topic || selectedSubtopics.length === 0) {
+      alert('Please select at least one subtopic');
+      return;
+    }
+
+    // Save quiz configuration
+    localStorage.setItem('topic', topic);
+    localStorage.setItem('subtopics', JSON.stringify(selectedSubtopics));
+    localStorage.setItem('num_questions', numQuestions);
+    localStorage.setItem('timer_duration', timerDuration);
+
+    // Add subtle transition effect before redirect
+    const btn = document.getElementById('generateQuizBtn');
+    btn.innerHTML = '🌀 Launching...';
+    btn.disabled = true;
+    
+    setTimeout(() => {
+      window.location.href = 'quiz.html';
+    }, 300);
+  }
+
+  function viewHistory() {
+    window.location.href = 'history.html';
+  }
+
+  // Expose functions globally (maintaining original functionality)
+  window.getSubtopics = getSubtopics;
+  window.selectAllSubtopics = selectAllSubtopics;
+  window.clearSelection = clearSelection;
+  window.generateQuiz = generateQuiz;
+  window.viewHistory = viewHistory;
+  window.updateTimerInfo = updateTimerInfo;
+</script>
 </body>
 </html>

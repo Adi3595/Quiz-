@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz App Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>QUIZ++ | Premium Portal</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
 
 * {
     margin: 0;
@@ -14,46 +14,117 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    color: white;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: #040404;
     min-height: 100vh;
-    overflow-x: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.container {
-    width: 90%;
-    max-width: 420px;
-    background: rgba(55, 65, 81, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow-x: hidden;
+    padding: 1.5rem;
 }
 
-.container::before {
+/* Deep void premium background */
+body::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-    animation: shimmer 3s ease-in-out infinite;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at 35% 30%, #1F1F1F 0%, #040404 90%);
+    z-index: -2;
 }
 
-@keyframes shimmer {
-    0%, 100% { transform: translateX(-100%); }
-    50% { transform: translateX(100%); }
+/* Neon #00C896 aura with movement */
+body::after {
+    content: '';
+    position: fixed;
+    top: -15%;
+    left: -5%;
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(circle, rgba(0, 200, 150, 0.12), transparent 75%);
+    filter: blur(90px);
+    z-index: -1;
+    animation: auraDrift 14s infinite alternate ease-in-out;
+}
+
+@keyframes auraDrift {
+    0% { opacity: 0.3; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0.8; transform: translate(8%, 6%) scale(1.25); }
+}
+
+/* secondary glow */
+.glow-orb {
+    position: fixed;
+    bottom: -10%;
+    right: -5%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(0, 200, 150, 0.06), transparent 80%);
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: -1;
+    animation: orbMove 18s infinite alternate;
+}
+
+@keyframes orbMove {
+    0% { transform: translate(0, 0); opacity: 0.2; }
+    100% { transform: translate(-6%, -8%); opacity: 0.6; }
+}
+
+/* Cursor glow effect */
+.cursor-glow {
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(0, 200, 150, 0.15), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s linear;
+    filter: blur(45px);
+    will-change: transform;
+}
+
+/* Floating particles */
+.particle {
+    position: fixed;
+    width: 3px;
+    height: 3px;
+    background: #00C896;
+    border-radius: 50%;
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatParticle 18s infinite linear;
+}
+
+@keyframes floatParticle {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    15% { opacity: 0.6; }
+    85% { opacity: 0.5; }
+    100% { transform: translateY(-20vh) scale(0.8); opacity: 0; }
+}
+
+/* Main container */
+.container {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(18, 18, 22, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 2.5rem;
+    padding: 2.8rem 2.5rem;
+    border: 1px solid rgba(0, 200, 150, 0.28);
+    box-shadow: 0 35px 60px -20px rgba(0, 0, 0, 0.7), inset 0 0 0 0.5px rgba(0, 200, 150, 0.12);
+    transition: all 0.45s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+    opacity: 0;
+    transform: translateY(30px);
+    position: relative;
+    z-index: 20;
 }
 
 .container.active {
@@ -61,79 +132,141 @@ body {
     transform: translateY(0);
 }
 
+/* Premium edge shimmer */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #00C896, #9effe0, #00C896, transparent);
+    border-radius: 2.5rem 2.5rem 0 0;
+    animation: goldFlow 3.2s ease-in-out infinite;
+}
+
+@keyframes goldFlow {
+    0% { opacity: 0.4; background-position: -100% 0; }
+    50% { opacity: 1; background-position: 100% 0; }
+    100% { opacity: 0.4; background-position: 200% 0; }
+}
+
+/* Typography */
 h2 {
     text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 30px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff, #00C896, #b3ffe8);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
     position: relative;
+    padding-bottom: 0.5rem;
 }
 
 h2::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    bottom: -4px;
     left: 50%;
     transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    width: 70px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00C896, #00ffcc, transparent);
     border-radius: 2px;
 }
 
+.subhead {
+    text-align: center;
+    color: #a0b3c9;
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+/* Form groups */
 .input-group {
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 1.8rem;
 }
 
 .input-group input {
     width: 100%;
-    padding: 15px 15px 15px 45px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    background: rgba(17, 24, 39, 0.6);
-    color: white;
-    font-size: 16px;
-    transition: all 0.3s ease;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 1.5px solid rgba(0, 200, 150, 0.3);
+    border-radius: 3rem;
+    background: rgba(4, 4, 4, 0.7);
+    color: #f0f3fa;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
     outline: none;
+    font-family: 'Inter', monospace;
 }
 
 .input-group input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    border-color: #00C896;
+    box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.25);
     transform: translateY(-2px);
+    background: rgba(4, 4, 4, 0.92);
 }
 
 .input-group i {
     position: absolute;
-    left: 15px;
+    left: 1.2rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
-    transition: all 0.3s ease;
+    font-style: normal;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #00C896;
+    opacity: 0.8;
+    transition: 0.2s;
 }
 
 .input-group input:focus + i {
-    color: #3b82f6;
+    opacity: 1;
+    text-shadow: 0 0 5px #00C896;
 }
 
+.password-toggle {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    font-size: 1rem;
+    opacity: 0.7;
+    transition: 0.2s;
+    color: #00C896;
+}
+
+.password-toggle:hover {
+    opacity: 1;
+    text-shadow: 0 0 6px #00C896;
+}
+
+/* Buttons */
 button {
     width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    border: none;
-    border-radius: 12px;
+    padding: 0.95rem;
+    background: linear-gradient(105deg, #1F1F1F, #0a0a0a);
+    border: 1px solid rgba(0, 200, 150, 0.55);
+    border-radius: 3rem;
+    font-weight: 700;
+    font-size: 1rem;
     cursor: pointer;
-    color: white;
-    font-weight: 600;
-    font-size: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #f5f9ff;
+    transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     position: relative;
     overflow: hidden;
-    margin-top: 10px;
+    margin-top: 0.8rem;
+    letter-spacing: 0.4px;
+    font-family: 'Inter', sans-serif;
 }
 
 button::before {
@@ -141,143 +274,92 @@ button::before {
     position: absolute;
     top: 0;
     left: -100%;
-    width: 100%;
+    width: 60%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(0, 200, 150, 0.18), transparent);
+    transition: left 0.55s ease;
 }
 
 button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    transform: translateY(-3px);
+    border-color: #00ffcc;
+    box-shadow: 0 14px 28px -12px rgba(0, 200, 150, 0.35);
 }
 
 button:hover::before {
-    left: 100%;
+    left: 120%;
 }
 
 button:active {
-    transform: translateY(0);
+    transform: translateY(1px);
 }
 
+/* Links */
 p {
     text-align: center;
-    margin-top: 25px;
-    color: #d1d5db;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #a0aec0;
 }
 
 a {
-    color: #3b82f6;
+    color: #00C896;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-a::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #3b82f6;
-    transition: width 0.3s ease;
+    transition: all 0.2s;
+    border-bottom: 1px dotted transparent;
 }
 
 a:hover {
-    color: #60a5fa;
+    color: #00ffcc;
+    border-bottom-color: #00C896;
 }
 
-a:hover::after {
-    width: 100%;
-}
-
-#error,
-#regError {
-    color: #ef4444;
+/* Messages */
+.error-message,
+.success-message {
     text-align: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    background: rgba(239, 68, 68, 0.1);
-    border-radius: 8px;
-    border-left: 3px solid #ef4444;
-    animation: shake 0.5s ease;
+    margin-bottom: 1.2rem;
+    padding: 0.8rem;
+    border-radius: 3rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    backdrop-filter: blur(8px);
+    animation: fadeSlide 0.45s ease;
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
+.error-message {
+    background: rgba(255, 120, 80, 0.1);
+    color: #ffbb8e;
+    border-left: 3px solid #f97316;
 }
 
 .success-message {
-    color: #22c55e;
-    text-align: center;
-    margin-bottom: 15px;
-    padding: 10px;
-    background: rgba(34, 197, 94, 0.1);
-    border-radius: 8px;
-    border-left: 3px solid #22c55e;
-    animation: fadeIn 0.5s ease;
+    background: rgba(0, 200, 150, 0.12);
+    color: #a3ffe6;
+    border-left: 3px solid #00ffaa;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeSlide {
+    0% { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Floating background elements */
-.floating-bg {
-    position: fixed;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-    animation: float 8s ease-in-out infinite;
-    z-index: -1;
-}
-
-.floating-bg:nth-child(1) {
-    top: 10%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.floating-bg:nth-child(2) {
-    top: 60%;
-    right: 10%;
-    animation-delay: -2s;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-}
-
-.floating-bg:nth-child(3) {
-    bottom: 20%;
-    left: 20%;
-    animation-delay: -4s;
-    background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(180deg); }
-}
-
-/* Loading animation */
 .loading {
     display: none;
     text-align: center;
-    margin-top: 15px;
+    margin: 0.4rem auto;
 }
 
 .loading-spinner {
-    width: 30px;
-    height: 30px;
-    border: 3px solid rgba(59, 130, 246, 0.3);
-    border-top: 3px solid #3b82f6;
+    width: 26px;
+    height: 26px;
+    border: 2.5px solid rgba(0, 200, 150, 0.3);
+    border-top: 2.5px solid #00C896;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: spin 0.8s linear infinite;
     margin: 0 auto;
 }
 
@@ -286,329 +368,341 @@ a:hover::after {
     100% { transform: rotate(360deg); }
 }
 
-/* Password visibility toggle */
-.password-toggle {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.password-toggle:hover {
-    color: #3b82f6;
-}
-
-/* Form switching animation */
-.form-switch {
-    animation: formSwitch 0.5s ease;
-}
-
-@keyframes formSwitch {
-    0% { opacity: 0; transform: translateX(-20px); }
-    100% { opacity: 1; transform: translateX(0); }
-}
-
-/* History link styles */
+/* History section */
 .history-link {
+    margin-top: 2rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid rgba(0, 200, 150, 0.2);
     text-align: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .history-btn {
-    background: linear-gradient(135deg, #8b5cf6, #ec4899) !important;
-    margin-top: 15px !important;
+    background: linear-gradient(125deg, #1F2925, #0f1512) !important;
+    border-color: #00C896 !important;
+    margin-top: 0.6rem !important;
+    font-weight: 600;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 .history-btn:hover {
-    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.4) !important;
+    background: #1A2622 !important;
+    border-color: #00ffcc !important;
+    box-shadow: 0 0 14px rgba(0, 200, 150, 0.35) !important;
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+    body { padding: 1rem; }
+    .container { padding: 2rem 1.5rem; max-width: 100%; }
+    h2 { font-size: 2rem; }
+    .subhead { font-size: 0.75rem; }
+    .history-btn { width: 100%; }
+}
+
+.form-switch {
+    animation: elegantFlip 0.5s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@keyframes elegantFlip {
+    0% { opacity: 0; transform: scale(0.98) translateX(8px); }
+    100% { opacity: 1; transform: scale(1) translateX(0); }
 }
 </style>
 </head>
 <body>
-<!-- Floating background elements -->
-<div class="floating-bg"></div>
-<div class="floating-bg"></div>
-<div class="floating-bg"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="glow-orb"></div>
+<div id="particleContainer"></div>
 
+<!-- LOGIN CARD -->
 <div class="container active" id="loginContainer">
-    <h2>Welcome Back</h2>
-    <div id="error"></div>
+    <h2>Quiz<span style="font-weight:400;">++</span></h2>
+    <div class="subhead">secure access · premium knowledge realm</div>
+    <div id="error" class="error-message" style="display: none;"></div>
     
     <div class="input-group">
-        <input type="text" id="username" placeholder="Username" autocomplete="username">
-        <i>👤</i>
+        <input type="text" id="username" placeholder="username / email" autocomplete="username">
+        <i>⌘</i>
     </div>
     
     <div class="input-group">
-        <input type="password" id="password" placeholder="Password" autocomplete="current-password">
-        <i>🔒</i>
-        <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
+        <input type="password" id="password" placeholder="password" autocomplete="current-password">
+        <i>⛭</i>
+        <span class="password-toggle" onclick="togglePassword('password')">◉</span>
     </div>
     
-    <button onclick="login()">
-        <span class="button-text">Login</span>
-        <div class="loading" id="loginLoading">
-            <div class="loading-spinner"></div>
-        </div>
+    <button id="loginBtn" onclick="login()">
+        <span class="button-text">Enter →</span>
+        <div class="loading" id="loginLoading"><div class="loading-spinner"></div></div>
     </button>
     
-    <p>Don't have an account? <a onclick="showRegister()">Register</a></p>
+    <p>no credentials? <a id="showRegLink">initiate registration</a></p>
     
     <div class="history-link">
-        <p>Want to see your progress?</p>
-        <button class="history-btn" onclick="viewHistoryAsGuest()">
-            📊 View History
-        </button>
+        <p>⎯ revisit your past scores ⎯</p>
+        <button class="history-btn" onclick="viewHistoryAsGuest()">📊 view history</button>
     </div>
 </div>
 
-<div class="container" id="registerContainer">
-    <h2>Join Us</h2>
-    <div id="regError"></div>
+<!-- REGISTER CARD -->
+<div class="container" id="registerContainer" style="display: none;">
+    <h2>Join<span style="font-weight:400;"> · Quiz++</span></h2>
+    <div class="subhead">create your identity · start your journey</div>
+    <div id="regError" class="error-message" style="display: none;"></div>
     
     <div class="input-group">
-        <input type="text" id="regUsername" placeholder="Username" autocomplete="username">
-        <i>👤</i>
+        <input type="text" id="regUsername" placeholder="choose username" autocomplete="username">
+        <i>⌘</i>
     </div>
     
     <div class="input-group">
-        <input type="password" id="regPassword" placeholder="Password" autocomplete="new-password">
-        <i>🔒</i>
-        <span class="password-toggle" onclick="togglePassword('regPassword')">👁️</span>
+        <input type="password" id="regPassword" placeholder="create a strong key" autocomplete="new-password">
+        <i>⛭</i>
+        <span class="password-toggle" onclick="togglePassword('regPassword')">◉</span>
     </div>
     
-    <button onclick="register()">
-        <span class="button-text">Register</span>
-        <div class="loading" id="regLoading">
-            <div class="loading-spinner"></div>
-        </div>
+    <button id="registerBtn" onclick="register()">
+        <span class="button-text">begin →</span>
+        <div class="loading" id="regLoading"><div class="loading-spinner"></div></div>
     </button>
     
-    <p>Already have an account? <a onclick="showLogin()">Login</a></p>
+    <p>already a member? <a id="showLoginLink">return to login</a></p>
     
     <div class="history-link">
-        <p>Want to see your progress?</p>
-        <button class="history-btn" onclick="viewHistoryAsGuest()">
-            📊 View History
-        </button>
+        <p>⚡ track your evolution</p>
+        <button class="history-btn" onclick="viewHistoryAsGuest()">📊 view history</button>
     </div>
 </div>
 
 <script>
-// Initialize page with animation
-document.addEventListener('DOMContentLoaded', function() {
-    const loginContainer = document.getElementById('loginContainer');
-    setTimeout(() => {
-        loginContainer.classList.add('active');
-    }, 100);
-});
+    // Cursor glow effect
+    const cursorGlow = document.getElementById('cursorGlow');
+    document.addEventListener('mousemove', (e) => {
+        cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    });
 
-function showRegister() {
-    const loginContainer = document.getElementById('loginContainer');
-    const registerContainer = document.getElementById('registerContainer');
-    
-    loginContainer.classList.remove('active');
-    
-    setTimeout(() => {
-        loginContainer.style.display = 'none';
-        registerContainer.style.display = 'block';
-        
-        setTimeout(() => {
-            registerContainer.classList.add('active');
-            registerContainer.classList.add('form-switch');
-            
-            // Clear any previous errors
-            document.getElementById('regError').innerText = '';
-            
-            // Focus on first input
-            document.getElementById('regUsername').focus();
-        }, 50);
-    }, 300);
-}
-
-function showLogin() {
-    const loginContainer = document.getElementById('loginContainer');
-    const registerContainer = document.getElementById('registerContainer');
-    
-    registerContainer.classList.remove('active');
-    
-    setTimeout(() => {
-        registerContainer.style.display = 'none';
-        loginContainer.style.display = 'block';
-        
-        setTimeout(() => {
-            loginContainer.classList.add('active');
-            loginContainer.classList.add('form-switch');
-            
-            // Clear any previous errors
-            document.getElementById('error').innerText = '';
-            
-            // Focus on first input
-            document.getElementById('username').focus();
-        }, 50);
-    }, 300);
-}
-
-function togglePassword(inputId) {
-    const input = document.getElementById(inputId);
-    const toggle = input.parentNode.querySelector('.password-toggle');
-    
-    if (input.type === 'password') {
-        input.type = 'text';
-        toggle.textContent = '🙈';
-    } else {
-        input.type = 'password';
-        toggle.textContent = '👁️';
-    }
-}
-
-function viewHistoryAsGuest() {
-    const username = localStorage.getItem('username');
-    if (username) {
-        // User is logged in, go directly to history
-        window.location.href = 'history.html';
-    } else {
-        // Show login prompt
-        const errorDiv = document.getElementById('error') || document.getElementById('regError');
-        if (errorDiv) {
-            errorDiv.innerText = 'Please login first to view your history.';
-            errorDiv.style.display = 'block';
-        }
-        
-        // Ensure login form is visible
-        if (document.getElementById('loginContainer').style.display === 'none') {
-            showLogin();
+    // floating particles for ambient depth
+    function createParticles() {
+        const container = document.getElementById('particleContainer');
+        if (!container) return;
+        for (let i = 0; i < 60; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 5 + 1.5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.animationDuration = `${Math.random() * 18 + 10}s`;
+            particle.style.animationDelay = `${Math.random() * 12}s`;
+            particle.style.background = `#00C896`;
+            particle.style.opacity = Math.random() * 0.5 + 0.2;
+            container.appendChild(particle);
         }
     }
-}
-
-async function login() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const errorDiv = document.getElementById('error');
-    const loginBtn = document.querySelector('#loginContainer button');
-    const buttonText = loginBtn.querySelector('.button-text');
-    const loadingSpinner = document.getElementById('loginLoading');
+    createParticles();
     
-    errorDiv.innerText = '';
-
-    if (!username || !password) {
-        errorDiv.innerText = 'Please fill all fields.';
-        return;
-    }
-
-    // Show loading state
-    buttonText.style.display = 'none';
-    loadingSpinner.style.display = 'block';
-    loginBtn.disabled = true;
-
-    try {
-        const res = await fetch('/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password})
-        });
-        const data = await res.json();
-
-        if (res.ok && data.message === "Login successful!") {
-            localStorage.setItem('username', username);
-            
-            // Show success message
-            errorDiv.className = 'success-message';
-            errorDiv.innerText = 'Login successful! Redirecting...';
-            
-            // Add a small delay for the success message to be visible
+    // DOM transitions
+    function showRegister() {
+        const loginContainer = document.getElementById('loginContainer');
+        const registerContainer = document.getElementById('registerContainer');
+        loginContainer.classList.remove('active');
+        setTimeout(() => {
+            loginContainer.style.display = 'none';
+            registerContainer.style.display = 'block';
             setTimeout(() => {
-                window.location.href = 'topics.html';
-            }, 1000);
+                registerContainer.classList.add('active');
+                registerContainer.classList.add('form-switch');
+                document.getElementById('regError').innerText = '';
+                document.getElementById('regError').style.display = 'none';
+                document.getElementById('regUsername').focus();
+            }, 30);
+        }, 250);
+    }
+    
+    function showLogin() {
+        const loginContainer = document.getElementById('loginContainer');
+        const registerContainer = document.getElementById('registerContainer');
+        registerContainer.classList.remove('active');
+        setTimeout(() => {
+            registerContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
+            setTimeout(() => {
+                loginContainer.classList.add('active');
+                loginContainer.classList.add('form-switch');
+                document.getElementById('error').innerText = '';
+                document.getElementById('error').style.display = 'none';
+                document.getElementById('username').focus();
+            }, 30);
+        }, 250);
+    }
+    
+    window.togglePassword = function(inputId) {
+        const input = document.getElementById(inputId);
+        const toggle = input.parentNode.querySelector('.password-toggle');
+        if (input.type === 'password') {
+            input.type = 'text';
+            toggle.textContent = '◎';
         } else {
-            errorDiv.innerText = data.message || 'Login failed.';
-            // Reset button state
+            input.type = 'password';
+            toggle.textContent = '◉';
+        }
+    };
+    
+    function viewHistoryAsGuest() {
+        const username = localStorage.getItem('username');
+        if (username) {
+            window.location.href = 'history.html';
+        } else {
+            const errorDiv = document.getElementById('error') || document.getElementById('regError');
+            if (errorDiv) {
+                errorDiv.innerText = '⟡ please authenticate to view your history';
+                errorDiv.style.display = 'block';
+                errorDiv.className = 'error-message';
+            }
+            if (document.getElementById('loginContainer').style.display === 'none') showLogin();
+        }
+    }
+    
+    // API calls
+    async function login() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const errorDiv = document.getElementById('error');
+        const loginBtn = document.querySelector('#loginContainer button');
+        const buttonText = loginBtn.querySelector('.button-text');
+        const loadingSpinner = document.getElementById('loginLoading');
+        
+        errorDiv.style.display = 'none';
+        errorDiv.innerText = '';
+        
+        if (!username || !password) {
+            errorDiv.innerText = 'please fill all fields';
+            errorDiv.style.display = 'block';
+            return;
+        }
+        
+        buttonText.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+        loginBtn.disabled = true;
+        
+        try {
+            const res = await fetch('/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password})
+            });
+            const data = await res.json();
+            if (res.ok && data.message === "Login successful!") {
+                localStorage.setItem('username', username);
+                errorDiv.className = 'success-message';
+                errorDiv.innerText = '✔ login successful! redirecting...';
+                errorDiv.style.display = 'block';
+                setTimeout(() => { window.location.href = 'topics.html'; }, 1000);
+            } else {
+                errorDiv.className = 'error-message';
+                errorDiv.innerText = data.message || 'authentication failed';
+                errorDiv.style.display = 'block';
+                buttonText.style.display = 'block';
+                loadingSpinner.style.display = 'none';
+                loginBtn.disabled = false;
+            }
+        } catch (err) {
+            errorDiv.className = 'error-message';
+            errorDiv.innerText = 'server connection error';
+            errorDiv.style.display = 'block';
             buttonText.style.display = 'block';
             loadingSpinner.style.display = 'none';
             loginBtn.disabled = false;
         }
-    } catch (err) {
-        errorDiv.innerText = 'Error connecting to server.';
-        console.error(err);
-        // Reset button state
-        buttonText.style.display = 'block';
-        loadingSpinner.style.display = 'none';
-        loginBtn.disabled = false;
     }
-}
-
-async function register() {
-    const username = document.getElementById('regUsername').value.trim();
-    const password = document.getElementById('regPassword').value.trim();
-    const regError = document.getElementById('regError');
-    const regBtn = document.querySelector('#registerContainer button');
-    const buttonText = regBtn.querySelector('.button-text');
-    const loadingSpinner = document.getElementById('regLoading');
     
-    regError.innerText = '';
-
-    if (!username || !password) {
-        regError.innerText = 'Please fill all fields.';
-        return;
-    }
-
-    // Show loading state
-    buttonText.style.display = 'none';
-    loadingSpinner.style.display = 'block';
-    regBtn.disabled = true;
-
-    try {
-        const res = await fetch('/register', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({username, password})
-        });
-        const data = await res.json();
-
-        if (res.ok && data.message === "Registration successful!") {
-            regError.className = 'success-message';
-            regError.innerText = 'Registration successful! Redirecting to login...';
-            
-            setTimeout(() => {
-                showLogin();
-                // Reset button state
+    async function register() {
+        const username = document.getElementById('regUsername').value.trim();
+        const password = document.getElementById('regPassword').value.trim();
+        const regError = document.getElementById('regError');
+        const regBtn = document.querySelector('#registerContainer button');
+        const buttonText = regBtn.querySelector('.button-text');
+        const loadingSpinner = document.getElementById('regLoading');
+        
+        regError.style.display = 'none';
+        if (!username || !password) {
+            regError.innerText = 'all fields required';
+            regError.style.display = 'block';
+            return;
+        }
+        
+        buttonText.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+        regBtn.disabled = true;
+        
+        try {
+            const res = await fetch('/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username, password})
+            });
+            const data = await res.json();
+            if (res.ok && data.message === "Registration successful!") {
+                regError.className = 'success-message';
+                regError.innerText = 'registration successful! redirecting to login';
+                regError.style.display = 'block';
+                setTimeout(() => {
+                    showLogin();
+                    buttonText.style.display = 'block';
+                    loadingSpinner.style.display = 'none';
+                    regBtn.disabled = false;
+                }, 1400);
+            } else {
+                regError.className = 'error-message';
+                regError.innerText = data.message || 'registration failed';
+                regError.style.display = 'block';
                 buttonText.style.display = 'block';
                 loadingSpinner.style.display = 'none';
                 regBtn.disabled = false;
-            }, 1500);
-        } else {
-            regError.innerText = data.message || 'Registration failed.';
-            // Reset button state
+            }
+        } catch (err) {
+            regError.innerText = 'server error';
+            regError.style.display = 'block';
             buttonText.style.display = 'block';
             loadingSpinner.style.display = 'none';
             regBtn.disabled = false;
         }
-    } catch (err) {
-        regError.innerText = 'Error connecting to server.';
-        console.error(err);
-        // Reset button state
-        buttonText.style.display = 'block';
-        loadingSpinner.style.display = 'none';
-        regBtn.disabled = false;
     }
-}
-
-// Allow form submission with Enter key
-document.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        if (document.getElementById('loginContainer').style.display !== 'none') {
-            login();
-        } else {
-            register();
+    
+    // link handlers
+    document.getElementById('showRegLink')?.addEventListener('click', showRegister);
+    document.getElementById('showLoginLink')?.addEventListener('click', showLogin);
+    
+    // Enter key handler
+    document.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            if (document.getElementById('loginContainer').style.display !== 'none' && document.getElementById('loginContainer').offsetParent !== null) {
+                login();
+            } else if (document.getElementById('registerContainer').style.display !== 'none' && document.getElementById('registerContainer').offsetParent !== null) {
+                register();
+            }
         }
-    }
-});
+    });
+    
+    // init animation
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.getElementById('loginContainer')?.classList.add('active');
+        }, 60);
+        const existingUser = localStorage.getItem('username');
+        if (existingUser && window.location.pathname.includes('login')) {
+            const msgDiv = document.getElementById('error');
+            if (msgDiv) {
+                msgDiv.className = 'success-message';
+                msgDiv.innerText = `✨ welcome back, ${existingUser} · redirecting`;
+                msgDiv.style.display = 'block';
+                setTimeout(() => { window.location.href = 'topics.html'; }, 1200);
+            }
+        }
+    });
 </script>
 </body>
 </html>

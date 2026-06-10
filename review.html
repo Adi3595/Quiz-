@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Review</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>QUIZ++ | Review & Insights</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
     
     * {
       margin: 0;
@@ -13,121 +15,225 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-      color: white;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #040404;
+      color: #eef2ff;
       min-height: 100vh;
       overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+    }
+
+    /* Premium animated gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 30% 20%, #1F1F1F 0%, #040404 90%);
+      z-index: -2;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -15%;
+      left: -5%;
+      width: 70%;
+      height: 70%;
+      background: radial-gradient(circle, rgba(0, 200, 150, 0.12), transparent 75%);
+      filter: blur(90px);
+      z-index: -1;
+      animation: auraFloat 14s infinite alternate ease-in-out;
+    }
+
+    @keyframes auraFloat {
+      0% { opacity: 0.3; transform: translate(0, 0) scale(1); }
+      100% { opacity: 0.8; transform: translate(8%, 6%) scale(1.25); }
+    }
+
+    /* Floating particles background */
+    .particle-field {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #00C896;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: floatParticle 18s infinite linear;
+    }
+
+    @keyframes floatParticle {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      15% { opacity: 0.6; }
+      85% { opacity: 0.4; }
+      100% { transform: translateY(-20vh) scale(0.8); opacity: 0; }
+    }
+
+    /* Cursor glow effect */
+    .cursor-glow {
+      position: fixed;
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(0, 200, 150, 0.15), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s linear;
+      filter: blur(45px);
+      will-change: transform;
     }
 
     .container {
       width: 90%;
-      max-width: 800px;
-      margin: auto;
-      padding: 40px 20px;
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 10;
     }
 
     h1 {
       text-align: center;
       font-size: 2.5rem;
-      margin-bottom: 30px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff, #00C896, #a0f0e0);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
       background-clip: text;
+      color: transparent;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00C896, #00ffcc, transparent);
+      border-radius: 2px;
     }
 
     .question-card {
-      background: rgba(55, 65, 81, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 25px;
-      margin: 20px 0;
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      background: rgba(18, 18, 22, 0.75);
+      backdrop-filter: blur(20px);
+      padding: 1.8rem;
+      margin: 1.2rem 0;
+      border-radius: 2rem;
+      border: 1px solid rgba(0, 200, 150, 0.25);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
       width: 100%;
-      max-width: 800px;
+    }
+
+    .question-card:hover {
+      border-color: rgba(0, 200, 150, 0.45);
+      transform: translateY(-2px);
     }
 
     .question {
-      font-weight: 600;
-      margin-bottom: 15px;
+      font-weight: 700;
+      margin-bottom: 1rem;
       line-height: 1.6;
-      font-size: 1.1rem;
-      text-align: center;
+      font-size: 1.05rem;
     }
 
     .options-container {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0.6rem;
     }
 
     .option {
-      padding: 12px 15px;
-      border-radius: 8px;
-      margin: 5px 0;
+      padding: 0.8rem 1rem;
+      border-radius: 3rem;
+      margin: 0.2rem 0;
       white-space: pre-wrap;
       font-family: 'Inter', sans-serif;
-      border: 2px solid transparent;
-      transition: all 0.3s ease;
+      border: 1.5px solid transparent;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
     }
 
     .correct {
-      background-color: rgba(16, 185, 129, 0.2);
-      border-color: #10b981;
-      color: #10b981;
+      background: rgba(0, 200, 150, 0.15);
+      border-color: #00C896;
+      color: #a3ffe6;
     }
 
     .wrong {
-      background-color: rgba(239, 68, 68, 0.2);
+      background: rgba(239, 68, 68, 0.12);
       border-color: #ef4444;
-      color: #ef4444;
+      color: #ffbb8e;
     }
 
     .correct-answer {
-      background-color: rgba(14, 165, 233, 0.2);
-      border-color: #0ea5e9;
-      color: #0ea5e9;
+      background: rgba(0, 200, 150, 0.08);
+      border-color: #00C896;
+      color: #8ef5e0;
+      opacity: 0.9;
     }
 
     .explanation {
-      background: rgba(17, 24, 39, 0.6);
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 8px;
-      border-left: 4px solid #8b5cf6;
-      font-style: italic;
+      background: rgba(4, 4, 4, 0.6);
+      padding: 1rem 1.2rem;
+      margin-top: 1rem;
+      border-radius: 1.5rem;
+      border-left: 3px solid #00C896;
       line-height: 1.5;
+      font-size: 0.85rem;
+      color: #cbd5e6;
     }
 
     .score {
       text-align: center;
-      font-size: 2rem;
-      margin: 30px 0;
-      font-weight: bold;
-      padding: 20px;
-      background: rgba(55, 65, 81, 0.8);
-      border-radius: 12px;
-      border: 2px solid rgba(59, 130, 246, 0.3);
+      font-size: 1.8rem;
+      margin: 1.5rem 0;
+      font-weight: 800;
+      padding: 1.2rem;
+      background: rgba(18, 18, 22, 0.75);
+      backdrop-filter: blur(20px);
+      border-radius: 2rem;
+      border: 1px solid rgba(0, 200, 150, 0.3);
       width: 100%;
-      max-width: 800px;
+      transition: all 0.3s ease;
     }
 
-    /* Improved Button Container */
+    .score small {
+      font-size: 0.9rem;
+      color: #8e9aaf;
+      font-weight: 500;
+    }
+
+    /* Button Container */
     .button-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin: 40px 0 20px;
+      gap: 1rem;
+      margin: 2rem 0 1rem;
       width: 100%;
-      max-width: 800px;
     }
 
     @media (max-width: 600px) {
@@ -137,318 +243,335 @@
     }
 
     button {
-      padding: 15px 20px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      border: none;
-      border-radius: 10px;
+      padding: 0.9rem 1.2rem;
+      background: linear-gradient(105deg, #1F1F1F, #0a0a0a);
+      border: 1px solid rgba(0, 200, 150, 0.5);
+      border-radius: 3rem;
       cursor: pointer;
       color: white;
-      font-size: 16px;
-      font-weight: 600;
-      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 200, 150, 0.15), transparent);
+      transition: left 0.55s ease;
     }
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+      border-color: #00ffcc;
+      box-shadow: 0 8px 20px rgba(0, 200, 150, 0.3);
     }
 
-    button.secondary {
-      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    button:active {
+      transform: translateY(1px);
     }
 
-    button.tertiary {
-      background: linear-gradient(135deg, #10b981, #059669);
+    .secondary {
+      background: linear-gradient(105deg, #1F2522, #0f1512);
     }
 
-    button.login-btn {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      grid-column: span 2;
+    .tertiary {
+      background: linear-gradient(105deg, #1F2A1F, #0a150f);
     }
 
-    @media (max-width: 600px) {
-      button.login-btn {
-        grid-column: span 1;
-      }
+    .login-btn {
+      background: linear-gradient(105deg, #2A1F1F, #1a0f0f);
+      border-color: #f97316;
     }
 
-    button.login-btn:hover {
-      box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+    .login-btn:hover {
+      border-color: #ff8c42;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
     }
 
     .button-icon {
-      font-size: 18px;
+      font-size: 1.1rem;
     }
 
     pre {
-      background: rgba(17, 24, 39, 0.8);
-      padding: 12px;
-      border-radius: 8px;
+      background: rgba(4, 4, 4, 0.6);
+      padding: 0.8rem;
+      border-radius: 1rem;
       overflow-x: auto;
-      margin: 8px 0;
+      margin: 0.5rem 0;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
+      font-size: 0.8rem;
       line-height: 1.4;
       white-space: pre-wrap;
-    }
-
-    /* Floating background elements */
-    .floating-bg {
-      position: fixed;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
-      animation: float 8s ease-in-out infinite;
-      z-index: -1;
-    }
-
-    .floating-bg:nth-child(1) {
-      top: 10%;
-      left: 10%;
-      animation-delay: 0s;
-    }
-
-    .floating-bg:nth-child(2) {
-      top: 60%;
-      right: 10%;
-      animation-delay: -2s;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
-    }
-
-    .floating-bg:nth-child(3) {
-      bottom: 20%;
-      left: 20%;
-      animation-delay: -4s;
-      background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
+      border: 0.5px solid rgba(0, 200, 150, 0.2);
     }
 
     .status-badge {
       display: inline-block;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-left: 10px;
+      padding: 0.2rem 0.8rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      margin-left: 0.8rem;
     }
 
     .correct-badge {
-      background: rgba(16, 185, 129, 0.2);
-      color: #10b981;
-      border: 1px solid #10b981;
+      background: rgba(0, 200, 150, 0.15);
+      color: #8ef5e0;
+      border: 1px solid #00C896;
     }
 
     .incorrect-badge {
-      background: rgba(239, 68, 68, 0.2);
-      color: #ef4444;
+      background: rgba(239, 68, 68, 0.12);
+      color: #ffbb8e;
       border: 1px solid #ef4444;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0.5rem; margin: 1rem auto; }
+      h1 { font-size: 2rem; }
+      .question-card { padding: 1.2rem; }
+      .score { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="particle-field" id="particleField"></div>
 
-  <div class="floating-bg"></div>
-  <div class="floating-bg"></div>
-  <div class="floating-bg"></div>
-
-  <div class="container">
-    <h1>Quiz Review</h1>
-    <div id="review-container"></div>
-    <div class="score" id="score"></div>
-    
-    <div class="button-container">
-      <button onclick="finishReview()">
-        <span class="button-icon">📝</span>
-        Take Another Quiz
-      </button>
-      <button class="secondary" onclick="viewHistory()">
-        <span class="button-icon">📊</span>
-        View History
-      </button>
-      <button class="tertiary" onclick="goToResults()">
-        <span class="button-icon">🏆</span>
-        View Results
-      </button>
-      <button class="login-btn" onclick="goToLogin()">
-        <span class="button-icon">🔐</span>
-        Go to Login
-      </button>
-    </div>
+<div class="container">
+  <h1>✦ review & insights ✦</h1>
+  <div id="review-container"></div>
+  <div class="score" id="score"></div>
+  
+  <div class="button-container">
+    <button onclick="finishReview()">
+      <span class="button-icon">📝</span> Take Another Quiz
+    </button>
+    <button class="secondary" onclick="viewHistory()">
+      <span class="button-icon">📊</span> View History
+    </button>
+    <button class="tertiary" onclick="goToResults()">
+      <span class="button-icon">🏆</span> View Results
+    </button>
+    <button class="login-btn" onclick="goToLogin()">
+      <span class="button-icon">🔐</span> Go to Login
+    </button>
   </div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const questions = JSON.parse(localStorage.getItem('questions') || '[]');
-      const answers = JSON.parse(localStorage.getItem('answers') || '[]');
-      const explanations = JSON.parse(localStorage.getItem('explanations') || '[]');
-      const timeTaken = parseInt(localStorage.getItem('time_taken')) || 0;
-      const avgTimePerQuestion = parseFloat(localStorage.getItem('average_time_per_question')) || 0;
+<script>
+  // Cursor glow effect
+  const cursorGlow = document.getElementById('cursorGlow');
+  document.addEventListener('mousemove', (e) => {
+    cursorGlow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+  });
 
-      // Calculate score
-      let score = 0;
-      questions.forEach((q, i) => {
-        if (answers[i] && q.answer && answers[i].toUpperCase() === q.answer.toUpperCase()) {
-          score++;
-        }
-      });
+  // Generate floating particles
+  function createParticles() {
+    const container = document.getElementById('particleField');
+    if (!container) return;
+    for (let i = 0; i < 60; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      const size = Math.random() * 5 + 2;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+      particle.style.animationDelay = `${Math.random() * 15}s`;
+      particle.style.background = `#00C896`;
+      particle.style.opacity = Math.random() * 0.5 + 0.2;
+      container.appendChild(particle);
+    }
+  }
+  createParticles();
 
-      const total = questions.length;
-      const percentage = total > 0 ? (score / total) * 100 : 0;
-      
-      // Set score color based on percentage
-      const scoreDiv = document.getElementById('score');
-      if (percentage >= 80) {
-        scoreDiv.style.color = '#10b981';
-      } else if (percentage >= 50) {
-        scoreDiv.style.color = '#f59e0b';
-      } else {
-        scoreDiv.style.color = '#ef4444';
+  // HTML escaping helper
+  function escapeHtml(unsafe) {
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const questions = JSON.parse(localStorage.getItem('questions') || '[]');
+    const answers = JSON.parse(localStorage.getItem('answers') || '[]');
+    const explanations = JSON.parse(localStorage.getItem('explanations') || '[]');
+    const timeTaken = parseInt(localStorage.getItem('time_taken')) || 0;
+    const avgTimePerQuestion = parseFloat(localStorage.getItem('average_time_per_question')) || 0;
+
+    // Calculate score
+    let score = 0;
+    questions.forEach((q, i) => {
+      if (answers[i] && q.answer && answers[i].toUpperCase() === q.answer.toUpperCase()) {
+        score++;
       }
-      
-      // Add time information to score display
-      const minutes = Math.floor(timeTaken / 60);
-      const seconds = timeTaken % 60;
-      scoreDiv.innerHTML = `Score: ${score}/${total} (${percentage.toFixed(1)}%)<br><small style="font-size: 1rem; color: #9ca3af;">⏱️ Time: ${minutes}m ${seconds}s (Avg: ${avgTimePerQuestion}s/q)</small>`;
-
-      const container = document.getElementById('review-container');
-
-      questions.forEach((q, i) => {
-        const card = document.createElement('div');
-        card.className = 'question-card';
-
-        const userAnswer = answers[i];
-        const correctAnswer = q.answer;
-        const isCorrect = userAnswer && correctAnswer && userAnswer.toUpperCase() === correctAnswer.toUpperCase();
-        
-        const questionHeader = document.createElement('div');
-        questionHeader.style.display = 'flex';
-        questionHeader.style.justifyContent = 'space-between';
-        questionHeader.style.alignItems = 'center';
-        questionHeader.style.marginBottom = '15px';
-
-        const question = document.createElement('div');
-        question.className = 'question';
-        let qText = q.question || 'No question text';
-        
-        // Format code blocks in question
-        if (qText.includes("```")) {
-          const parts = qText.split("```");
-          let formatted = "";
-          for (let j = 0; j < parts.length; j++) {
-            if (j % 2 === 0) {
-              formatted += `<div>${parts[j]}</div>`;
-            } else {
-              formatted += `<pre>${parts[j]}</pre>`;
-            }
-          }
-          qText = formatted;
-        }
-        question.innerHTML = `<strong>Question ${i + 1}:</strong> ${qText}`;
-
-        const statusBadge = document.createElement('span');
-        statusBadge.className = `status-badge ${isCorrect ? 'correct-badge' : 'incorrect-badge'}`;
-        statusBadge.textContent = isCorrect ? '✓ Correct' : '✗ Incorrect';
-
-        questionHeader.appendChild(question);
-        questionHeader.appendChild(statusBadge);
-        card.appendChild(questionHeader);
-
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options-container';
-
-        q.options.forEach((opt, index) => {
-          const letter = ['A', 'B', 'C', 'D'][index];
-          const optDiv = document.createElement('div');
-          optDiv.className = 'option';
-          
-          // Format code blocks in options
-          if (opt.includes("```")) {
-            const code = opt.replace(/```/g, "");
-            optDiv.innerHTML = `<pre>${code}</pre>`;
-          } else {
-            optDiv.textContent = opt;
-          }
-
-          // Highlight answers
-          if (userAnswer === letter && letter === correctAnswer) {
-            optDiv.classList.add('correct');
-          } else if (userAnswer === letter && letter !== correctAnswer) {
-            optDiv.classList.add('wrong');
-          } else if (letter === correctAnswer) {
-            optDiv.classList.add('correct-answer');
-          }
-
-          optionsContainer.appendChild(optDiv);
-        });
-        card.appendChild(optionsContainer);
-
-        // Show explanation for both correct and wrong answers
-        const explanation = explanations[i];
-        if (explanation) {
-          const explDiv = document.createElement('div');
-          explDiv.className = 'explanation';
-          
-          let explanationText = explanation;
-          // Handle both string and object explanations
-          if (typeof explanation === 'object') {
-            if (explanation.explanation) {
-              explanationText = explanation.explanation;
-            } else if (explanation.message) {
-              explanationText = explanation.message;
-            } else {
-              explanationText = JSON.stringify(explanation, (key, value) => {
-                if (key === 'question' || key === 'correct' || key === 'user_answer' || key === 'correct_answer') {
-                  return undefined;
-                }
-                return value;
-              });
-            }
-          }
-          
-          // Clean up the explanation text
-          explanationText = explanationText.toString()
-            .replace(/[{}"]/g, '')
-            .replace(/explanation:/gi, '')
-            .replace(/✅ Correct!/gi, '')
-            .replace(/❌ Your answer:.*?Correct:/gi, '')
-            .trim();
-          
-          // Add appropriate emoji based on correctness
-          const emoji = isCorrect ? '✅' : '💡';
-          explDiv.innerHTML = `${emoji} <strong>Explanation:</strong> ${explanationText}`;
-          card.appendChild(explDiv);
-        }
-
-        container.appendChild(card);
-      });
     });
 
-    function finishReview() {
-      window.location.href = 'topics.html';
+    const total = questions.length;
+    const percentage = total > 0 ? (score / total) * 100 : 0;
+    
+    const scoreDiv = document.getElementById('score');
+    if (percentage >= 80) {
+      scoreDiv.style.borderColor = '#00C896';
+    } else if (percentage >= 50) {
+      scoreDiv.style.borderColor = '#f59e0b';
+    } else {
+      scoreDiv.style.borderColor = '#ef4444';
     }
+    
+    const minutes = Math.floor(timeTaken / 60);
+    const seconds = timeTaken % 60;
+    scoreDiv.innerHTML = `🏆 ${score}/${total} · ${percentage.toFixed(1)}%<br><small>⏱️ ${minutes}m ${seconds}s · avg ${avgTimePerQuestion}s per question</small>`;
 
-    function viewHistory() {
+    const container = document.getElementById('review-container');
+    container.innerHTML = '';
+
+    questions.forEach((q, i) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+
+      const userAnswer = answers[i];
+      const correctAnswer = q.answer;
+      const isCorrect = userAnswer && correctAnswer && userAnswer.toUpperCase() === correctAnswer.toUpperCase();
       
-      window.location.href = 'history.html';
-    }
+      const questionHeader = document.createElement('div');
+      questionHeader.className = 'question-header';
 
-    function goToResults() {
-      window.location.href = 'results.html';
-    }
+      const question = document.createElement('div');
+      question.className = 'question';
+      let qText = q.question || 'No question text';
+      
+      // Format code blocks in question
+      if (qText.includes("```")) {
+        const parts = qText.split("```");
+        let formatted = "";
+        for (let j = 0; j < parts.length; j++) {
+          if (j % 2 === 0) {
+            formatted += `<span>${escapeHtml(parts[j])}</span>`;
+          } else {
+            formatted += `<pre>${escapeHtml(parts[j])}</pre>`;
+          }
+        }
+        qText = formatted;
+      } else {
+        qText = escapeHtml(qText);
+      }
+      question.innerHTML = `<strong>Question ${i + 1}:</strong> ${qText}`;
 
-    function goToLogin() {
-      localStorage.removeItem('username');
-      window.location.href = 'index.html';
-    }
-  </script>
+      const statusBadge = document.createElement('span');
+      statusBadge.className = `status-badge ${isCorrect ? 'correct-badge' : 'incorrect-badge'}`;
+      statusBadge.textContent = isCorrect ? '✓ correct' : '✗ incorrect';
+
+      questionHeader.appendChild(question);
+      questionHeader.appendChild(statusBadge);
+      card.appendChild(questionHeader);
+
+      const optionsContainer = document.createElement('div');
+      optionsContainer.className = 'options-container';
+
+      q.options.forEach((opt, index) => {
+        const letter = ['A', 'B', 'C', 'D'][index];
+        const optDiv = document.createElement('div');
+        optDiv.className = 'option';
+        
+        // Format code blocks in options
+        if (opt.includes("```")) {
+          const code = opt.replace(/```/g, "");
+          optDiv.innerHTML = `<pre>${escapeHtml(code)}</pre>`;
+        } else {
+          optDiv.textContent = opt;
+        }
+
+        // Highlight answers
+        if (userAnswer === letter && letter === correctAnswer) {
+          optDiv.classList.add('correct');
+        } else if (userAnswer === letter && letter !== correctAnswer) {
+          optDiv.classList.add('wrong');
+        } else if (letter === correctAnswer) {
+          optDiv.classList.add('correct-answer');
+        }
+
+        optionsContainer.appendChild(optDiv);
+      });
+      card.appendChild(optionsContainer);
+
+      // Show explanation
+      const explanation = explanations[i];
+      if (explanation) {
+        const explDiv = document.createElement('div');
+        explDiv.className = 'explanation';
+        
+        let explanationText = explanation;
+        if (typeof explanation === 'object') {
+          if (explanation.explanation) {
+            explanationText = explanation.explanation;
+          } else if (explanation.message) {
+            explanationText = explanation.message;
+          } else {
+            explanationText = JSON.stringify(explanation, (key, value) => {
+              if (key === 'question' || key === 'correct' || key === 'user_answer' || key === 'correct_answer') {
+                return undefined;
+              }
+              return value;
+            });
+          }
+        }
+        
+        explanationText = explanationText.toString()
+          .replace(/[{}"]/g, '')
+          .replace(/explanation:/gi, '')
+          .replace(/✅ Correct!/gi, '')
+          .replace(/❌ Your answer:.*?Correct:/gi, '')
+          .trim();
+        
+        const emoji = isCorrect ? '✨' : '💡';
+        explDiv.innerHTML = `${emoji} <strong>insight:</strong> ${escapeHtml(explanationText)}`;
+        card.appendChild(explDiv);
+      }
+
+      container.appendChild(card);
+    });
+  });
+
+  function finishReview() {
+    window.location.href = 'topics.html';
+  }
+
+  function viewHistory() {
+    window.location.href = 'history.html';
+  }
+
+  function goToResults() {
+    window.location.href = 'results.html';
+  }
+
+  function goToLogin() {
+    localStorage.removeItem('username');
+    window.location.href = 'index.html';
+  }
+</script>
 </body>
 </html>
