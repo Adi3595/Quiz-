@@ -83,6 +83,6 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 
 ## Contributing
 
-Aditya Gawali 
+Aditya Gawali    
 Atharva Ghule
 
