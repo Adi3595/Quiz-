@@ -2,6 +2,8 @@
 
 A web-based quiz application built with Flask, featuring AI-generated questions, user authentication, and quiz history tracking.
 
+---
+
 ## Features
 
 - **User Authentication**: Register and login functionality
@@ -12,6 +14,8 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 - **Responsive UI**: HTML-based frontend with multiple pages
 - **Database Integration**: MongoDB for user data and quiz history
 
+---
+
 ## Technologies Used
 
 - **Backend**: Python Flask
@@ -19,6 +23,8 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 - **AI API**: Groq (Llama model)
 - **Frontend**: HTML, CSS, JavaScript
 - **Additional**: C++ evaluator (evaluator.cpp), JSON handling (json.hpp)
+
+---
 
 ## Installation
 
@@ -42,6 +48,8 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 
 4. Ensure MongoDB is running and accessible.
 
+---
+
 ## Running the Application
 
 1. Start the Flask server:
@@ -51,6 +59,8 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 
 2. Open your browser and navigate to `http://localhost:5000`
 
+---
+
 ## Usage
 
 1. **Register/Login**: Create an account or log in
@@ -59,6 +69,8 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 4. **Take Quiz**: Answer questions within the time limit
 5. **View Results**: See score and explanations
 6. **Check History**: Review past quiz attempts
+
+---
 
 ## API Endpoints
 
@@ -72,6 +84,8 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 - `POST /delete_quiz` - Delete specific quiz
 - `POST /cleanup_unevaluated` - Remove unevaluated quizzes
 
+---
+
 ## Project Structure
 
 - `app.py` - Main Flask application with OOP classes
@@ -81,7 +95,9 @@ A web-based quiz application built with Flask, featuring AI-generated questions,
 - `data/` - Sample data files
 - `requirements.txt` - Python dependencies
 
-## Contributing
+---
+
+## Contributors
 
 Aditya Gawali    
 Atharva Ghule
